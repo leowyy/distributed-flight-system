@@ -94,7 +94,7 @@ public class FlightManager {
         return null;
     }
 
-    private void initialiseDummyData () {
+    public void initialiseDummyData () {
         this.flights.add(new Flight(1, "a", "a", 0, 10, 100, "25"));
         this.flights.add(new Flight(2, "b", "b", 1, 15, 200, "25"));
         this.flights.add(new Flight(3, "c", "c", 2, 20, 300, "25"));

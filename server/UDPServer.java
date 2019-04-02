@@ -30,20 +30,18 @@ class UDPServer {
 
         UDPServer udpServer = new UDPServer(port, debug);
 
+        FlightManager flightManager = new FlightManager();
+        flightManager.initialiseDummyData();
+
         while (moreQuotes) {
             try {
-                byte[] buf = udpServer.receive(true);
-                int serviceType = Utils.unmarshalInteger(buf, 0);
-                switch (serviceType) {
+                ClientMessage message = udpServer.receive(true);
+                if (debug) message.print();
+
+                switch (message.serviceType) {
                     case Constants.SERVICE_GET_FLIGHT_DETAILS:
-                        ServerFlightDetails.handleResponse(buf);
-                        // handle request, send back datagram packet.
-                        // send the response to the client at "address" and "port"
-//                        InetAddress client_address = buf.getAddress();
-//                        int client_port = buf.getPort();
-//                        packet = new DatagramPacket(buf, buf.length, address, port);
-//                        socket.send(packet);
-//                        break;
+                        ServerFlightDetails.handleResponse(message, flightManager);
+                        break;
                     default:
                         System.out.println(Constants.UNRECOGNIZE_SVC_MSG);
                 }
@@ -57,22 +55,31 @@ class UDPServer {
         udpServer.clientSocket.close();
     }
 
-    public byte[] receive(boolean monitor) throws IOException, InterruptedException{
-        int responseID;
-        int messageLength;
+    public ClientMessage receive(boolean monitor) throws IOException, InterruptedException{
+
         DatagramPacket receivePacket;
         byte[] header = new byte[4];
         DatagramPacket headerPacket = new DatagramPacket(header, header.length);
         this.clientSocket.receive(headerPacket);
 
-        messageLength = Utils.unmarshalInteger(headerPacket.getData(), 0);
+        int messageLength = Utils.unmarshalInteger(headerPacket.getData(), 0);
 
         byte[] receiveData = new byte[messageLength];
         receivePacket = new DatagramPacket(receiveData, receiveData.length);
         this.clientSocket.receive(receivePacket);
-        responseID = Utils.unmarshalInteger(receivePacket.getData(), 0);
-        System.out.println(responseID);
 
-        return Arrays.copyOfRange(receivePacket.getData(), Constants.INT_SIZE, messageLength);
+        int responseID = Utils.unmarshalInteger(receivePacket.getData(), 0);
+        int serviceType = Utils.unmarshalInteger(receivePacket.getData(), Constants.INT_SIZE);
+        InetAddress client_address = receivePacket.getAddress();
+        int client_port = receivePacket.getPort();
+
+        return new ClientMessage(
+                responseID,
+                Arrays.copyOfRange(receivePacket.getData(), Constants.INT_SIZE, messageLength),
+                client_address,
+                client_port,
+                serviceType,
+                messageLength
+        );
     }
 }

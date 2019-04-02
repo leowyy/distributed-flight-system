@@ -8,25 +8,14 @@ import common.Utils;
  */
 class ServerFlightDetails {
 
-    public static void handleResponse(byte[] response) {
-        int ptr = 0;
-        int serviceNum = Utils.unmarshalInteger(response, ptr);
+    public static void handleResponse(ClientMessage message, FlightManager flightManager) {
+        byte[] clientMessageData = message.message;
+        int ptr = Constants.INT_SIZE;
+        int flightId = Utils.unmarshalMsgInteger(clientMessageData, ptr);
 
-        ptr += Constants.INT_SIZE;
-        int flightId = Utils.unmarshalMsgInteger(response, ptr);
+        FlightDetail foo = flightManager.getFlightDetails(flightId);
+        foo.print();
 
-        ptr += Constants.INT_SIZE + Constants.INT_SIZE;
-        int departure_time = Utils.unmarshalMsgInteger(response, ptr);
-
-        ptr += Constants.INT_SIZE + Constants.INT_SIZE;
-        int availability = Utils.unmarshalMsgInteger(response, ptr);
-
-        ptr += Constants.INT_SIZE + Constants.INT_SIZE;
-        float airfare = Utils.unmarshalMsgFloat(response, ptr);
-
-        ptr += Constants.INT_SIZE + Constants.FLOAT_SIZE;
-        String destination = Utils.unmarshalMsgString(response, ptr);
-
-        System.out.printf(Constants.SUCCESSFUL_FLIGHT_DETAILS, flightId, departure_time, availability, airfare, destination);
+        // Construct message from foo and reply
     }
 }

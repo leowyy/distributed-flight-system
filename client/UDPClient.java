@@ -49,8 +49,9 @@ class UDPClient {
             switch (serviceType) {
                 case Constants.SERVICE_GET_FLIGHT_DETAILS:
                     float airfare = 0.7F;
-                    packageByte = HandleFlightDetails.constructMessage(curID,1,2,3, airfare, "hello");
+                    packageByte = HandleFlightDetails.constructMessage(curID,2,2,3, airfare, "hello");
                     udpClient.send(packageByte);
+                    // need to receive and handle response
                     break;
                 case Constants.SERVICE_GET_FLIGHT_BY_SOURCE_DESTINATION:
                     int[] flightIds = {0, 2, 3, 4};
