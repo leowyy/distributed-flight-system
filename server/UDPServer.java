@@ -38,9 +38,12 @@ class UDPServer {
                 ClientMessage message = udpServer.receive(true);
                 if (debug) message.print();
 
+                int curID = udpServer.getID();
+                byte[] packageByte;
                 switch (message.serviceType) {
                     case Constants.SERVICE_GET_FLIGHT_DETAILS:
-                        ServerFlightDetails.handleResponse(message, flightManager);
+                        packageByte = ServerFlightDetails.handleResponse(curID, message.payload, flightManager);
+                        udpServer.send(packageByte, message.clientAddress, message.clientPort);
                         break;
                     default:
                         System.out.println(Constants.UNRECOGNIZE_SVC_MSG);
@@ -54,6 +57,27 @@ class UDPServer {
         }
         udpServer.clientSocket.close();
     }
+
+    /**
+     * Get new ID and increment global ID
+     * @return {@code int} new ID
+     * @since 1.9
+     */
+    public int getID(){
+        this.idCounter++;
+        return this.idCounter;
+    }
+
+    public void send(byte[] message, InetAddress client_address, int client_port) throws IOException, InterruptedException{
+
+        byte[] header = Utils.marshal(message.length);
+        DatagramPacket headerPacket = new DatagramPacket(header, header.length, client_address, client_port);
+        this.clientSocket.send(headerPacket);
+
+        DatagramPacket sendPacket = new DatagramPacket(message, message.length, client_address, client_port);
+        this.clientSocket.send(sendPacket);
+    }
+
 
     public ClientMessage receive(boolean monitor) throws IOException, InterruptedException{
 
@@ -75,7 +99,7 @@ class UDPServer {
 
         return new ClientMessage(
                 responseID,
-                Arrays.copyOfRange(receivePacket.getData(), Constants.INT_SIZE, messageLength),
+                Arrays.copyOfRange(receivePacket.getData(), 2*Constants.INT_SIZE, messageLength),
                 client_address,
                 client_port,
                 serviceType,

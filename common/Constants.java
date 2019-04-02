@@ -25,8 +25,11 @@ public class Constants {
     public static final String ERR_MSG = "Error: %s\n";
     public static final String SUCCESS_MSG = "SUCCESS!";
     public static final String SEPARATOR = "================================================================================\n";
-    public static final String EXIT_MSG = "Thank you for using CACAD banking system!";
+    public static final String EXIT_MSG = "Thank you for using our flight system!";
     public static final String UNRECOGNIZE_SVC_MSG = "Sorry we cannot recognize your service choice!";
+
+    // Get Flight Details Constant
+    public static final String ENTER_FLIGHT_ID_MSG = "Enter flight ID: ";
 
     // Server Debug Constant
     public static final String PRINT_CLIENT_MESSAGE = "Response ID: %d\nService Type: %d\nClient address: %s\nClient port: %d\nMessage length: %d\n\n";

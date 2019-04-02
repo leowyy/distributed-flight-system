@@ -9,16 +9,16 @@ import java.net.InetAddress;
  */
 public class ClientMessage {
     int responseId;
-    byte[] message;
+    byte[] payload;
     InetAddress clientAddress;
     int clientPort;
     int serviceType;
     int messageLength;
 
-    public ClientMessage(int responseId, byte[] message, InetAddress clientAddress,
+    public ClientMessage(int responseId, byte[] payload, InetAddress clientAddress,
                          int clientPort, int serviceType, int messageLength) {
         this.responseId = responseId;
-        this.message = message;
+        this.payload = payload;
         this.clientAddress = clientAddress;
         this.clientPort = clientPort;
         this.serviceType = serviceType;

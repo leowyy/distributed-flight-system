@@ -4,6 +4,7 @@ import common.Utils;
 
 import java.io.IOException;
 import java.net.*;
+import java.util.Arrays;
 import java.util.Scanner;
 
 /**
@@ -42,16 +43,16 @@ class UDPClient {
 
             String message = scanner.nextLine();
             int serviceType = Integer.parseInt(message);
-            System.out.println();
 
             byte[] packageByte;
+            byte[] response;
             int curID = udpClient.getID();
             switch (serviceType) {
                 case Constants.SERVICE_GET_FLIGHT_DETAILS:
-                    float airfare = 0.7F;
-                    packageByte = HandleFlightDetails.constructMessage(curID,2,2,3, airfare, "hello");
+                    packageByte = HandleFlightDetails.constructMessage(scanner, curID);
                     udpClient.send(packageByte);
-                    // need to receive and handle response
+                    response = udpClient.receive(false);
+                    HandleFlightDetails.handleResponse(response);
                     break;
                 case Constants.SERVICE_GET_FLIGHT_BY_SOURCE_DESTINATION:
                     int[] flightIds = {0, 2, 3, 4};
@@ -89,4 +90,25 @@ class UDPClient {
         DatagramPacket sendPacket = new DatagramPacket(message, message.length, this.IPAddress, this.port);
         this.clientSocket.send(sendPacket);
     }
+
+
+    public byte[] receive(boolean monitor) throws IOException, InterruptedException{
+        int responseID;
+        int messageLength;
+        DatagramPacket receivePacket;
+
+        byte[] header = new byte[4];
+        DatagramPacket headerPacket = new DatagramPacket(header, header.length);
+        this.clientSocket.receive(headerPacket);
+
+        messageLength = Utils.unmarshalInteger(headerPacket.getData(), 0);
+
+        byte[] receiveData = new byte[messageLength];
+        receivePacket = new DatagramPacket(receiveData, receiveData.length);
+        this.clientSocket.receive(receivePacket);
+        responseID = Utils.unmarshalInteger(receivePacket.getData(), 0);
+
+        return Arrays.copyOfRange(receivePacket.getData(), Constants.INT_SIZE, messageLength);
+    }
+
 }
