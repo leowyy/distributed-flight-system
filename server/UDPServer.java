@@ -13,13 +13,13 @@ import java.util.HashMap;
  */
 class UDPServer {
 
-    private DatagramSocket clientSocket;
+    private DatagramSocket udpSocket;
     private int port;
     private int idCounter;
     private HashMap<ClientRecord, byte[]> memo;
 
     public UDPServer(int port, boolean debug) throws SocketException, UnknownHostException {
-        this.clientSocket = new DatagramSocket(port);
+        this.udpSocket = new DatagramSocket(port);
         this.port = port;
         this.idCounter = 0;
         this.memo = new HashMap<>();
@@ -52,6 +52,22 @@ class UDPServer {
                             udpServer.updateMemo(message, packageByte);
                             udpServer.send(packageByte, message.clientAddress, message.clientPort);
                             break;
+                        case Constants.SERVICE_GET_FLIGHT_BY_SOURCE_DESTINATION:
+                            packageByte = ServerFlightsBySourceDestination.handleResponse(curID, message.payload, flightManager);
+                            udpServer.updateMemo(message, packageByte);
+                            udpServer.send(packageByte, message.clientAddress, message.clientPort);
+                            break;
+                        case Constants.SERVICE_RESERVE_SEATS:
+                            packageByte = ServerReserveSeats.handleResponse(curID, message.payload, flightManager);
+                            udpServer.updateMemo(message, packageByte);
+                            udpServer.send(packageByte, message.clientAddress, message.clientPort);
+                            break;
+                        case Constants.SERVICE_MONITOR_AVAILABILITY:
+                            packageByte = ServerMonitorAvailability.handleResponse(curID, message.payload, flightManager,
+                                    message.clientAddress, message.clientPort, udpServer.udpSocket);
+                            udpServer.updateMemo(message, packageByte);
+                            udpServer.send(packageByte, message.clientAddress, message.clientPort);
+                            break;
                         default:
                             System.out.println(Constants.UNRECOGNIZE_SVC_MSG);
                     }
@@ -63,7 +79,7 @@ class UDPServer {
                 moreQuotes = false;
             }
         }
-        udpServer.clientSocket.close();
+        udpServer.udpSocket.close();
     }
 
     /**
@@ -76,14 +92,14 @@ class UDPServer {
         return this.idCounter;
     }
 
-    public void send(byte[] message, InetAddress client_address, int client_port) throws IOException, InterruptedException{
+    public void send(byte[] message, InetAddress clientAddress, int clientPort) throws IOException, InterruptedException{
 
         byte[] header = Utils.marshal(message.length);
-        DatagramPacket headerPacket = new DatagramPacket(header, header.length, client_address, client_port);
-        this.clientSocket.send(headerPacket);
+        DatagramPacket headerPacket = new DatagramPacket(header, header.length, clientAddress, clientPort);
+        this.udpSocket.send(headerPacket);
 
-        DatagramPacket sendPacket = new DatagramPacket(message, message.length, client_address, client_port);
-        this.clientSocket.send(sendPacket);
+        DatagramPacket sendPacket = new DatagramPacket(message, message.length, clientAddress, clientPort);
+        this.udpSocket.send(sendPacket);
     }
 
 
@@ -92,24 +108,24 @@ class UDPServer {
         DatagramPacket receivePacket;
         byte[] header = new byte[4];
         DatagramPacket headerPacket = new DatagramPacket(header, header.length);
-        this.clientSocket.receive(headerPacket);
+        this.udpSocket.receive(headerPacket);
 
         int messageLength = Utils.unmarshalInteger(headerPacket.getData(), 0);
 
         byte[] receiveData = new byte[messageLength];
         receivePacket = new DatagramPacket(receiveData, receiveData.length);
-        this.clientSocket.receive(receivePacket);
+        this.udpSocket.receive(receivePacket);
 
         int responseID = Utils.unmarshalInteger(receivePacket.getData(), 0);
         int serviceType = Utils.unmarshalInteger(receivePacket.getData(), Constants.INT_SIZE);
-        InetAddress client_address = receivePacket.getAddress();
-        int client_port = receivePacket.getPort();
+        InetAddress clientAddress = receivePacket.getAddress();
+        int clientPort = receivePacket.getPort();
 
         return new ClientMessage(
                 responseID,
                 Arrays.copyOfRange(receivePacket.getData(), 2*Constants.INT_SIZE, messageLength),
-                client_address,
-                client_port,
+                clientAddress,
+                clientPort,
                 serviceType,
                 messageLength
         );

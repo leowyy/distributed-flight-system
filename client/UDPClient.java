@@ -39,6 +39,10 @@ class UDPClient {
         while(!exit) {
             System.out.println(Constants.GET_FLIGHT_BY_SOURCE_DESTINATION_SVC_MSG);
             System.out.println(Constants.GET_FLIGHT_DETAILS_SVC_MSG);
+            System.out.println(Constants.RESERVE_SEATS_SVC_MSG);
+            System.out.println(Constants.MONITOR_FLIGHT_AVAILABILITY_SVC_MSG);
+            System.out.println(Constants.IDEMPOTENT_SERVICE);
+            System.out.println(Constants.NON_IDEMPOTENT_SERVICE);
             System.out.println(Constants.EXIT_SVC_MSG);
 
             String message = scanner.nextLine();
@@ -55,9 +59,22 @@ class UDPClient {
                     HandleFlightDetails.handleResponse(response);
                     break;
                 case Constants.SERVICE_GET_FLIGHT_BY_SOURCE_DESTINATION:
-                    int[] flightIds = {0, 2, 3, 4};
-                    packageByte = HandleFlightsBySourceDestination.constructMessage(curID, flightIds);
+                    packageByte = HandleFlightsBySourceDestination.constructMessage(scanner, curID);
                     udpClient.send(packageByte);
+                    response = udpClient.receive(false);
+                    HandleFlightsBySourceDestination.handleResponse(response);
+                    break;
+                case Constants.SERVICE_RESERVE_SEATS:
+                    packageByte = HandleReserveSeats.constructMessage(scanner, curID);
+                    udpClient.send(packageByte);
+                    response = udpClient.receive(false);
+                    HandleReserveSeats.handleResponse(response);
+                    break;
+                case Constants.SERVICE_MONITOR_AVAILABILITY:
+                    packageByte = HandleMonitorAvailability.constructMessage(scanner, curID);
+                    udpClient.send(packageByte);
+                    response = udpClient.receive(true);
+                    HandleMonitorAvailability.handleResponse(response);
                     break;
                 case Constants.SERVICE_EXIT:
                     System.out.println(Constants.EXIT_MSG);
