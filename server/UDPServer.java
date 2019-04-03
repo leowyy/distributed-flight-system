@@ -18,11 +18,14 @@ class UDPServer {
     private int idCounter;
     private HashMap<ClientRecord, byte[]> memo;
 
+    private double failProb;
+
     public UDPServer(int port, boolean debug) throws SocketException, UnknownHostException {
         this.udpSocket = new DatagramSocket(port);
         this.port = port;
         this.idCounter = 0;
         this.memo = new HashMap<>();
+        this.failProb = Constants.DEFAULT_FAILURE_PROB;
     }
 
     public static void main(String[] args)throws Exception {
@@ -93,13 +96,17 @@ class UDPServer {
     }
 
     public void send(byte[] message, InetAddress clientAddress, int clientPort) throws IOException, InterruptedException{
+        if (Math.random() < this.failProb) {
+            System.out.println("Server dropping packet to simulate lost request");
+        }
+        else {
+            byte[] header = Utils.marshal(message.length);
+            DatagramPacket headerPacket = new DatagramPacket(header, header.length, clientAddress, clientPort);
+            this.udpSocket.send(headerPacket);
 
-        byte[] header = Utils.marshal(message.length);
-        DatagramPacket headerPacket = new DatagramPacket(header, header.length, clientAddress, clientPort);
-        this.udpSocket.send(headerPacket);
-
-        DatagramPacket sendPacket = new DatagramPacket(message, message.length, clientAddress, clientPort);
-        this.udpSocket.send(sendPacket);
+            DatagramPacket sendPacket = new DatagramPacket(message, message.length, clientAddress, clientPort);
+            this.udpSocket.send(sendPacket);
+        }
     }
 
 
