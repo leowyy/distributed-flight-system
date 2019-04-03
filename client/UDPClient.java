@@ -35,8 +35,7 @@ class UDPClient {
         this.IPAddress = InetAddress.getByName(ip);
         this.serverPort = serverPort;
         this.idCounter = 0;
-        this.invSem = Constants.InvoSem.DEFAULT;
-//        this.setMaxTime(Constants.Timeout.DEFAULT_NO_TIME);
+        this.invSem = Constants.InvoSem.NONE;
         setMaxTime(Constants.Timeout.DEFAULT_NO_TIME);
         this.maxTries = Constants.Timeout.DEFAULT_MAX_TRIES;
         this.failProb = Constants.DEFAULT_FAILURE_PROB;
@@ -48,6 +47,7 @@ class UDPClient {
         int serverPort = Constants.DEFAULT_SERVER_PORT;
 
         UDPClient udpClient = new UDPClient(host, serverPort);
+        udpClient.setInvSem(Constants.InvoSem.AT_LEAST_ONCE);
 
         Scanner scanner = new Scanner(System.in);
         boolean exit = false;
@@ -125,8 +125,11 @@ class UDPClient {
         return invSem;
     }
 
-    public void setInvSem(int invSem){
+    public void setInvSem(int invSem) throws SocketException {
         this.invSem = invSem;
+        if (invSem != 0) {
+            setMaxTime(Constants.Timeout.DEFAULT_MAX_TIME);
+        }
     }
 
     public void setupInvSem(int invSem, int maxTime) throws SocketException {
