@@ -7,14 +7,16 @@ import common.Constants;
  */
 public class FlightDetail {
     int flightId;
+    String source;
     String destination;
     int departureTime;
     float airfare;
     int availability;
 
-    public FlightDetail(int flightId, String destination, int departureTime,
+    public FlightDetail(int flightId, String source, String destination, int departureTime,
                   float airfare, int availability) {
         this.flightId = flightId;
+        this.source = source;
         this.destination = destination;
         this.departureTime = departureTime;
         this.airfare = airfare;

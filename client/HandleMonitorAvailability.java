@@ -30,7 +30,7 @@ public class HandleMonitorAvailability {
     }
 
     // response is any updates sent by the callback
-    public static void handleResponse(byte[] response) {
+    public static int handleResponse(byte[] response) {
         int ptr = 0;
 
         int serviceNum = Utils.unmarshalInteger(response, ptr);
@@ -42,12 +42,15 @@ public class HandleMonitorAvailability {
         int flightId = Utils.unmarshalMsgInteger(response, ptr);
         ptr += Constants.INT_SIZE + Constants.INT_SIZE;
 
-        if (status == Constants.SUCCESS_STATUS) {
+        if (status == Constants.FLIGHT_FOUND_STATUS) {
             System.out.printf(Constants.MONITORING_STARTED_MSG, flightId);
+            int duration = Utils.unmarshalMsgInteger(response, ptr);
+            return duration;
         }
         else if (status == Constants.MONITORING_NEW_UPDATE_STATUS) {
             int availability = Utils.unmarshalMsgInteger(response, ptr);
             System.out.printf(Constants.MONITORING_UPDATE_MSG, availability, flightId);
         }
+        return 0;
     }
 }

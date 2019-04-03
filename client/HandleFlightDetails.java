@@ -39,7 +39,7 @@ class HandleFlightDetails {
         int flightId = Utils.unmarshalMsgInteger(response, ptr);
         ptr += Constants.INT_SIZE + Constants.INT_SIZE;
 
-        if (status == Constants.FAIL_STATUS) {
+        if (status == Constants.FLIGHT_NOT_FOUND_STATUS) {
             System.out.printf(Constants.FAILED_FLIGHT_DETAILS, flightId);
             return;
         }
@@ -53,8 +53,13 @@ class HandleFlightDetails {
         float airfare = Utils.unmarshalMsgFloat(response, ptr);
         ptr += Constants.INT_SIZE + Constants.FLOAT_SIZE;
 
+        int sourceLength = Utils.unmarshalInteger(response, ptr);
+        ptr += Constants.INT_SIZE;
+
+        String source = Utils.unmarshalString(response, ptr, ptr+sourceLength);
+        ptr += sourceLength;
         String destination = Utils.unmarshalMsgString(response, ptr);
 
-        System.out.printf(Constants.SUCCESSFUL_FLIGHT_DETAILS, flightId, departureTime, availability, airfare, destination);
+        System.out.printf(Constants.SUCCESSFUL_FLIGHT_DETAILS, flightId, departureTime, availability, airfare, source, destination);
     }
 }

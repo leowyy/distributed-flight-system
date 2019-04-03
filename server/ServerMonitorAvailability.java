@@ -26,17 +26,18 @@ public class ServerMonitorAvailability {
         flightManager.registerCallback(flightId, duration, inetAddress, port, udpSocket);
 
         // Construct response
-        return constructMessage(id, flightId);
+        return constructMessage(id, flightId, duration);
     }
 
-    public static byte[] constructMessage(int id, int flightId) throws UnsupportedEncodingException {
+    public static byte[] constructMessage(int id, int flightId, int duration) throws UnsupportedEncodingException {
         List message = new ArrayList();
 
         // message to say that monitoring has started
         Utils.append(message, id);
         Utils.append(message, Constants.SERVICE_MONITOR_AVAILABILITY);
-        Utils.append(message, Constants.SUCCESS_STATUS);
+        Utils.append(message, Constants.FLIGHT_FOUND_STATUS);
         Utils.appendMessage(message, flightId);
+        Utils.appendMessage(message, duration);
 
         return Utils.byteUnboxing(message);
     }

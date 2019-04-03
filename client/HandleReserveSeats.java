@@ -38,13 +38,19 @@ public class HandleReserveSeats {
         int status = Utils.unmarshalInteger(response, ptr);
         ptr += Constants.INT_SIZE;
 
+        int flightId = Utils.unmarshalMsgInteger(response, ptr);
+        ptr += Constants.INT_SIZE + Constants.INT_SIZE;
+
         int numReserve = Utils.unmarshalMsgInteger(response, ptr);
 
-        if (status == Constants.SUCCESS_STATUS) {
-            System.out.printf(Constants.SEATS_SUCCESSFULLY_RESERVED_MSG, numReserve);
+        if (status == Constants.SEATS_SUCCESSFULLY_RESERVED_STATUS) {
+            System.out.printf(Constants.SEATS_SUCCESSFULLY_RESERVED_MSG, numReserve, flightId);
         }
-        else if (status == Constants.FAIL_STATUS) {
-            System.out.printf(Constants.FAILED_TO_RESERVE_SEATS_MSG, numReserve);
+        else if (status == Constants.FLIGHT_NOT_FOUND_STATUS) {
+            System.out.printf(Constants.FAILED_FLIGHT_DETAILS, flightId);
+        }
+        else if (status == Constants.NO_AVAILABILITY_STATUS) {
+            System.out.printf(Constants.FAILED_TO_RESERVE_SEATS_MSG, numReserve, flightId);
         }
 
     }

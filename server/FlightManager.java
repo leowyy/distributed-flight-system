@@ -1,6 +1,7 @@
 package server;
 
 import common.Callback;
+import common.Constants;
 
 import java.io.IOException;
 import java.net.DatagramSocket;
@@ -9,7 +10,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 
-// need some timer so as to turn off expired callbacks.
 
 public class FlightManager {
     private ArrayList<Flight> flights;
@@ -35,22 +35,25 @@ public class FlightManager {
 
         for (Flight f : this.flights) {
             if (flightId == f.getFlightId()) {
-                return new FlightDetail(flightId, f.getDestination(), f.getDepartureTime(), f.getAirfare(), f.getAvailability());
+                return new FlightDetail(flightId, f.getSource(), f.getDestination(), f.getDepartureTime(),
+                        f.getAirfare(), f.getAvailability());
             }
         }
         return null;
     }
 
-    public Boolean reserveSeatsForFlight (int flightId, int numReserve) throws IOException, InterruptedException {
+    public int reserveSeatsForFlight (int flightId, int numReserve) throws IOException, InterruptedException {
         Flight f = this.getFlightById(flightId);
+        if (f == null) return Constants.FLIGHT_NOT_FOUND_STATUS;
         Boolean ack = f.reserveSeats(numReserve);
 
         if (ack) {
             // do callback action for clients that are monitoring this flight
             int availability = f.getAvailability();
             this.sendUpdates(flightId, availability);
+            return Constants.SEATS_SUCCESSFULLY_RESERVED_STATUS;
         }
-        return ack;
+        else return Constants.NO_AVAILABILITY_STATUS;
     }
 
     private void sendUpdates (int flightId, int availability) throws IOException, InterruptedException {

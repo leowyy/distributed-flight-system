@@ -39,12 +39,12 @@ class HandleFlightsBySourceDestination {
         int status = Utils.unmarshalInteger(response, ptr);
         ptr += Constants.INT_SIZE;
 
-        if (status == Constants.SUCCESS_STATUS) {
+        if (status == Constants.FLIGHT_FOUND_STATUS) {
             int[] flightIds = Utils.unmarshalMsgIntArray(response, ptr);
             System.out.println(Constants.FLIGHTS_FOUND_MSG);
             System.out.println(Arrays.toString(flightIds));
         }
-        else if (status == Constants.FAIL_STATUS) {
+        else if (status == Constants.FLIGHT_NOT_FOUND_STATUS) {
             System.out.println(Constants.NO_FLIGHTS_FOUND_MSG);
         }
     }

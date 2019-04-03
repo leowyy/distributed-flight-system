@@ -15,13 +15,13 @@ public class ServerFlightsBySourceDestination {
         int sourceLength = Utils.unmarshalInteger(message, ptr);
         ptr += Constants.INT_SIZE;
 
-        String source = Utils.unmarshalMsgString(message, ptr);
+        String source = Utils.unmarshalString(message, ptr, ptr+sourceLength);
         ptr += sourceLength;
 
         int destinationLength = Utils.unmarshalInteger(message, ptr);
         ptr += Constants.INT_SIZE;
 
-        String destination = Utils.unmarshalMsgString(message, ptr);
+        String destination = Utils.unmarshalString(message, ptr, ptr+destinationLength);
 
         ArrayList<Integer> ret = flightManager.getFlightsBySourceDestination(source, destination);
 
@@ -38,11 +38,11 @@ public class ServerFlightsBySourceDestination {
         int[] intArray = flightIds.stream().mapToInt(Integer::intValue).toArray();
 
         if (flightIds.size() > 0) {
-            Utils.append(message, Constants.SUCCESS_STATUS);
+            Utils.append(message, Constants.FLIGHT_FOUND_STATUS);
             Utils.appendMessage(message, intArray);
         }
         else { // send 0 failure status
-            Utils.append(message, Constants.FAIL_STATUS);
+            Utils.append(message, Constants.FLIGHT_NOT_FOUND_STATUS);
         }
 
         return Utils.byteUnboxing(message);

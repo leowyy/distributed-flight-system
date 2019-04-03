@@ -22,7 +22,7 @@ public class Callback {
     }
     public void update (int availability) throws IOException, InterruptedException {
         // need to do some sending
-        byte[] packageByte = this.constructMessage(0, availability);
+        byte[] packageByte = this.constructMessage(0, availability); // ID is just arbitrarily set as 0 for now
         this.send(packageByte);
     }
 
@@ -47,6 +47,11 @@ public class Callback {
 
     public Boolean hasExpired(long currentTime) {
         return currentTime > this.expiry;
+    }
+
+    private long getRemainingTime() {
+        long currentTime = System.currentTimeMillis();
+        return this.expiry - currentTime;
     }
 
     public int getClientPort() {

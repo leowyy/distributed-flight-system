@@ -17,24 +17,18 @@ public class ServerReserveSeats {
         ptr += Constants.INT_SIZE + Constants.INT_SIZE;
         int numReserve = Utils.unmarshalMsgInteger(message, ptr);
 
-        Boolean success = flightManager.reserveSeatsForFlight(flightId, numReserve);
+        int status = flightManager.reserveSeatsForFlight(flightId, numReserve);
 
         // Construct response
-        return constructMessage(id, numReserve, success);
+        return constructMessage(id, flightId, numReserve, status);
     }
 
-    public static byte[] constructMessage(int id, int numReserve, Boolean success) throws UnsupportedEncodingException {
+    public static byte[] constructMessage(int id, int flightId, int numReserve, int status) throws UnsupportedEncodingException {
         List message = new ArrayList();
         Utils.append(message, id);
         Utils.append(message, Constants.SERVICE_RESERVE_SEATS);
-
-        if (success) {
-            Utils.append(message, 1);
-        }
-        else {
-            Utils.append(message, 0);
-        }
-
+        Utils.append(message, status);
+        Utils.appendMessage(message, flightId);
         Utils.appendMessage(message, numReserve);
 
         return Utils.byteUnboxing(message);
