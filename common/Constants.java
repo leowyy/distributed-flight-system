@@ -83,4 +83,5 @@ public class Constants {
     public static final String ENTER_MONITOR_INTERVAL_MSG = "Enter monitor interval (in seconds): ";
     public static final String MONITORING_STARTED_MSG = "Now monitoring flight ID %d...\n";
     public static final String MONITORING_UPDATE_MSG = "There are now %d seats available for flight ID %d.\n";
+    public static final String MONITORING_END_MSG = "Monitoring has ended.\n";
 }

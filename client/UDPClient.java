@@ -90,11 +90,22 @@ class UDPClient {
                     HandleReserveSeats.handleResponse(response);
                     break;
                 case Constants.SERVICE_MONITOR_AVAILABILITY:
+                    int origMaxTime = udpClient.maxTime;
                     packageByte = HandleMonitorAvailability.constructMessage(scanner, curID);
                     response = udpClient.sendAndReceive(packageByte);
-//                    udpClient.send(packageByte);
-//                    response = udpClient.receive(true);
-                    HandleMonitorAvailability.handleResponse(response);
+                    int outstandingTime = HandleMonitorAvailability.handleResponse(response);
+                    try {
+                        do{
+                            udpClient.setMaxTime(outstandingTime);
+                            byte[] update = udpClient.receive(true);
+                            outstandingTime = HandleMonitorAvailability.handleResponse(update);
+                        } while(true);
+                    } catch (SocketTimeoutException e){
+                        udpClient.setMaxTime(origMaxTime);
+                        System.out.println(Constants.MONITORING_END_MSG);
+                        System.out.println();
+                        System.out.println(Constants.SEPARATOR);
+                    }
                     break;
                 case Constants.SERVICE_EXIT:
                     System.out.println(Constants.EXIT_MSG);
