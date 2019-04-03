@@ -173,7 +173,7 @@ class UDPClient {
 
     public void send(byte[] message) throws IOException, InterruptedException{
         if (Math.random() < this.failProb){
-            System.out.println("Dropping packet to simulate lost request");
+            System.out.println("Client dropping packet to simulate lost request.");
         } else {
             byte[] header = Utils.marshal(message.length);
             DatagramPacket headerPacket = new DatagramPacket(header, header.length, this.IPAddress, this.serverPort);
@@ -217,7 +217,7 @@ class UDPClient {
                 if (this.maxTries > 0 && tries >= this.maxTries){
                     throw new TimeoutException(String.format("Max tries of %d reached.", this.maxTries));
                 }
-                System.out.printf("Timeout %d, retrying...", tries);
+                System.out.printf("Timeout %d, retrying...\n", tries);
                 continue;
             }
         } while(this.getInvSem() != Constants.InvoSem.NONE);
