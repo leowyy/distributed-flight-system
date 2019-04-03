@@ -54,6 +54,7 @@ public class FlightManager {
     }
 
     private void sendUpdates (int flightId, int availability) throws IOException, InterruptedException {
+        if (!this.flightCallbacks.containsKey(flightId)) return;
         ArrayList<Callback> callbacks = this.flightCallbacks.get(flightId); // get the callbacks for this flight
         long currentTime = System.currentTimeMillis();
         Iterator iterator = callbacks.iterator();

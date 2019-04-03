@@ -6,7 +6,7 @@ package common;
 public class Constants {
     // Argument Constant
     public static final String DEFAULT_HOST = "127.0.0.1";
-    public static final int DEFAULT_PORT = 8080;
+    public static final int DEFAULT_SERVER_PORT = 8888;
 
     // Invocation Semantics
     public class InvoSem {
@@ -66,6 +66,7 @@ public class Constants {
 
     // Get Flight Details Constant
     public static final String SUCCESSFUL_FLIGHT_DETAILS = "Flight Details.\nFlight ID: %d\nDeparture time: %d\nAvailability: %d\nAirfare: %f\nDestination: %s\n";
+    public static final String FAILED_FLIGHT_DETAILS = "Flight details not found for flight ID: %d\n";
 
     // Get Flight by Source Destination
     public static final String ENTER_SOURCE_MSG = "Enter flight source: ";

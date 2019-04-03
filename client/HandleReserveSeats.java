@@ -22,7 +22,7 @@ public class HandleReserveSeats {
         int numReserve = Integer.parseInt(numReserveStr);
 
         Utils.append(message, id);
-        Utils.append(message, Constants.SERVICE_GET_FLIGHT_DETAILS);
+        Utils.append(message, Constants.SERVICE_RESERVE_SEATS);
         Utils.appendMessage(message, flightId);
         Utils.appendMessage(message, numReserve);
 

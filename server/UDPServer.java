@@ -28,7 +28,7 @@ class UDPServer {
     public static void main(String[] args)throws Exception {
         boolean moreQuotes = true;
 
-        int port = Constants.DEFAULT_PORT;
+        int port = Constants.DEFAULT_SERVER_PORT;
         boolean debug = true;
         boolean handled;
 

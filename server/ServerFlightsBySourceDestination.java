@@ -38,11 +38,11 @@ public class ServerFlightsBySourceDestination {
         int[] intArray = flightIds.stream().mapToInt(Integer::intValue).toArray();
 
         if (flightIds.size() > 0) {
-            Utils.append(message, 1);
+            Utils.append(message, Constants.SUCCESS_STATUS);
             Utils.appendMessage(message, intArray);
         }
         else { // send 0 failure status
-            Utils.append(message, 0);
+            Utils.append(message, Constants.FAIL_STATUS);
         }
 
         return Utils.byteUnboxing(message);
