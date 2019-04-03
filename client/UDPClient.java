@@ -103,6 +103,10 @@ class UDPClient {
                             HandleMonitorAvailability.handleResponse(update);
                             outstandingTime = (int) (expiry - System.currentTimeMillis());
                         }
+                        udpClient.setMaxTime(origMaxTime);
+                        System.out.println(Constants.MONITORING_END_MSG);
+                        System.out.println();
+                        System.out.println(Constants.SEPARATOR);
                     } catch (SocketTimeoutException e){
                         udpClient.setMaxTime(origMaxTime);
                         System.out.println(Constants.MONITORING_END_MSG);
@@ -121,6 +125,7 @@ class UDPClient {
 
             }
         }
+
 
     public int getInvSem() {
         return invSem;
