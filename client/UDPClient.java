@@ -93,13 +93,16 @@ class UDPClient {
                     int origMaxTime = udpClient.maxTime;
                     packageByte = HandleMonitorAvailability.constructMessage(scanner, curID);
                     response = udpClient.sendAndReceive(packageByte);
-                    int outstandingTime = HandleMonitorAvailability.handleResponse(response);
+                    int monitorInterval = HandleMonitorAvailability.handleResponse(response);
+                    long expiry = System.currentTimeMillis() + (monitorInterval * 1000);
                     try {
-                        do{
+                        int outstandingTime = (int) (expiry - System.currentTimeMillis());
+                        while (outstandingTime > 0){
                             udpClient.setMaxTime(outstandingTime);
                             byte[] update = udpClient.receive(true);
-                            outstandingTime = HandleMonitorAvailability.handleResponse(update);
-                        } while(true);
+                            HandleMonitorAvailability.handleResponse(update);
+                            outstandingTime = (int) (expiry - System.currentTimeMillis());
+                        }
                     } catch (SocketTimeoutException e){
                         udpClient.setMaxTime(origMaxTime);
                         System.out.println(Constants.MONITORING_END_MSG);
