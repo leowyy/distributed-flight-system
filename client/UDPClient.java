@@ -37,7 +37,7 @@ class UDPClient {
         this.idCounter = 0;
         this.invSem = Constants.InvoSem.DEFAULT;
 //        this.setMaxTime(Constants.Timeout.DEFAULT_NO_TIME);
-        setMaxTime(Constants.Timeout.DEFAULT_MAX_TIME);
+        setMaxTime(Constants.Timeout.DEFAULT_NO_TIME);
         this.maxTries = Constants.Timeout.DEFAULT_MAX_TRIES;
         this.failProb = Constants.DEFAULT_FAILURE_PROB;
     }
@@ -71,22 +71,16 @@ class UDPClient {
                 case Constants.SERVICE_GET_FLIGHT_DETAILS:
                     packageByte = HandleFlightDetails.constructMessage(scanner, curID);
                     response = udpClient.sendAndReceive(packageByte);
-//                    udpClient.send(packageByte);
-//                    response = udpClient.receive(false);
                     HandleFlightDetails.handleResponse(response);
                     break;
                 case Constants.SERVICE_GET_FLIGHT_BY_SOURCE_DESTINATION:
                     packageByte = HandleFlightsBySourceDestination.constructMessage(scanner, curID);
                     response = udpClient.sendAndReceive(packageByte);
-//                    udpClient.send(packageByte);
-//                    response = udpClient.receive(false);
                     HandleFlightsBySourceDestination.handleResponse(response);
                     break;
                 case Constants.SERVICE_RESERVE_SEATS:
                     packageByte = HandleReserveSeats.constructMessage(scanner, curID);
                     response = udpClient.sendAndReceive(packageByte);
-//                    udpClient.send(packageByte);
-//                    response = udpClient.receive(false);
                     HandleReserveSeats.handleResponse(response);
                     break;
                 case Constants.SERVICE_MONITOR_AVAILABILITY:
