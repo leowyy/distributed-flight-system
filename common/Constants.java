@@ -54,9 +54,11 @@ public class Constants {
     public static final String UNRECOGNIZE_SVC_MSG = "Sorry we cannot recognize your service choice!";
 
     // Status constants
-    public static final int SUCCESS_STATUS = 1;
-    public static final int FAIL_STATUS = 0;
+    public static final int FLIGHT_FOUND_STATUS = 1;
+    public static final int FLIGHT_NOT_FOUND_STATUS = 0;
     public static final int MONITORING_NEW_UPDATE_STATUS = 2;
+    public static final int SEATS_SUCCESSFULLY_RESERVED_STATUS = 3;
+    public static final int NO_AVAILABILITY_STATUS = 4;
 
     // Get Flight Details Constant
     public static final String ENTER_FLIGHT_ID_MSG = "Enter flight ID: ";
@@ -65,19 +67,20 @@ public class Constants {
     public static final String PRINT_CLIENT_MESSAGE = "Response ID: %d\nService Type: %d\nClient address: %s\nClient port: %d\nMessage length: %d\n\n";
 
     // Get Flight Details Constant
-    public static final String SUCCESSFUL_FLIGHT_DETAILS = "Flight Details.\nFlight ID: %d\nDeparture time: %d\nAvailability: %d\nAirfare: %f\nDestination: %s\n";
-    public static final String FAILED_FLIGHT_DETAILS = "Flight details not found for flight ID: %d\n";
+    public static final String SUCCESSFUL_FLIGHT_DETAILS = "Flight Details.\nFlight ID: %d\nDeparture time: %d\nAvailability: %d\nAirfare: %f\n" +
+            "Source: %s\nDestination: %s\n";
+    public static final String FAILED_FLIGHT_DETAILS = "Flight details not found for flight ID %d\n";
 
     // Get Flight by Source Destination
     public static final String ENTER_SOURCE_MSG = "Enter flight source: ";
     public static final String ENTER_DESTINATION_MSG = "Enter flight destination: ";
     public static final String NO_FLIGHTS_FOUND_MSG = "No flights found for this source and destination pair.";
-    public static final String FLIGHTS_FOUND_MSG = "These are the flights found: ";
+    public static final String FLIGHTS_FOUND_MSG = "These are the IDs of the flights found: ";
 
     // Reserve seats
     public static final String ENTER_NUM_RESERVE_MSG = "Enter the number of seats you want to reserve: ";
-    public static final String SEATS_SUCCESSFULLY_RESERVED_MSG = "Your %d seats have been reserved.\n";
-    public static final String FAILED_TO_RESERVE_SEATS_MSG = "Could not reserve your %d seats, no availability.\n";
+    public static final String SEATS_SUCCESSFULLY_RESERVED_MSG = "Your %d seats have been reserved for flight ID %d.\n";
+    public static final String FAILED_TO_RESERVE_SEATS_MSG = "Could not reserve your %d seats for flight ID %d, no availability.\n";
 
     // Monitor availability
     public static final String ENTER_MONITOR_INTERVAL_MSG = "Enter monitor interval (in seconds): ";
