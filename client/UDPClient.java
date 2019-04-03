@@ -47,7 +47,7 @@ class UDPClient {
         int serverPort = Constants.DEFAULT_SERVER_PORT;
 
         UDPClient udpClient = new UDPClient(host, serverPort);
-        udpClient.setInvSem(Constants.InvoSem.AT_LEAST_ONCE);
+        udpClient.setInvSem(Constants.InvoSem.DEFAULT);
 
         Scanner scanner = new Scanner(System.in);
         boolean exit = false;
