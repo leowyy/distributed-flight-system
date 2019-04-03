@@ -13,7 +13,7 @@ public class Constants {
         public static final int NONE = 0;
         public static final int AT_LEAST_ONCE = 1;
         public static final int AT_MOST_ONCE = 2;
-        public static final int DEFAULT = NONE;
+        public static final int DEFAULT = AT_LEAST_ONCE;
     }
 
     // Timeout Constants
@@ -23,7 +23,7 @@ public class Constants {
         public static final int DEFAULT_MAX_TRIES = 0;
     }
 
-    public static final double DEFAULT_FAILURE_PROB = 0.0;
+    public static final double DEFAULT_FAILURE_PROB = 0.5;
 
 
 
