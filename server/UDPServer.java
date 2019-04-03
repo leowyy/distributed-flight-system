@@ -6,6 +6,7 @@ import common.Utils;
 import java.net.*;
 import java.io.*;
 import java.util.Arrays;
+import java.util.HashMap;
 
 /**
  * Created by signapoop on 1/4/19.
@@ -15,11 +16,13 @@ class UDPServer {
     private DatagramSocket clientSocket;
     private int port;
     private int idCounter;
+    private HashMap<ClientRecord, byte[]> memo;
 
     public UDPServer(int port, boolean debug) throws SocketException, UnknownHostException {
         this.clientSocket = new DatagramSocket(port);
         this.port = port;
         this.idCounter = 0;
+        this.memo = new HashMap<>();
     }
 
     public static void main(String[] args)throws Exception {
@@ -27,6 +30,7 @@ class UDPServer {
 
         int port = Constants.DEFAULT_PORT;
         boolean debug = true;
+        boolean handled;
 
         UDPServer udpServer = new UDPServer(port, debug);
 
@@ -38,15 +42,19 @@ class UDPServer {
                 ClientMessage message = udpServer.receive(true);
                 if (debug) message.print();
 
-                int curID = udpServer.getID();
-                byte[] packageByte;
-                switch (message.serviceType) {
-                    case Constants.SERVICE_GET_FLIGHT_DETAILS:
-                        packageByte = ServerFlightDetails.handleResponse(curID, message.payload, flightManager);
-                        udpServer.send(packageByte, message.clientAddress, message.clientPort);
-                        break;
-                    default:
-                        System.out.println(Constants.UNRECOGNIZE_SVC_MSG);
+                handled = udpServer.checkAndSendOldResponse(message);
+                if (!handled) {
+                    int curID = udpServer.getID();
+                    byte[] packageByte;
+                    switch (message.serviceType) {
+                        case Constants.SERVICE_GET_FLIGHT_DETAILS:
+                            packageByte = ServerFlightDetails.handleResponse(curID, message.payload, flightManager);
+                            udpServer.updateMemo(message, packageByte);
+                            udpServer.send(packageByte, message.clientAddress, message.clientPort);
+                            break;
+                        default:
+                            System.out.println(Constants.UNRECOGNIZE_SVC_MSG);
+                    }
                 }
                 System.out.println(Constants.SEPARATOR);
 
@@ -105,5 +113,24 @@ class UDPServer {
                 serviceType,
                 messageLength
         );
+    }
+
+    public boolean checkAndSendOldResponse(ClientMessage message){
+        ClientRecord record = new ClientRecord(message.clientAddress, message.clientPort, message.responseId);
+        boolean isKeyPresent = this.memo.containsKey(record);
+        if (isKeyPresent) {
+            byte[] packageByte = this.memo.get(record);
+            try{
+                this.send(packageByte, message.clientAddress, message.clientPort);
+            } catch (Exception e){
+                e.printStackTrace();
+            }
+        }
+        return isKeyPresent;
+    }
+
+    public void updateMemo(ClientMessage message, byte[] payload){
+        ClientRecord record = new ClientRecord(message.clientAddress, message.clientPort, message.responseId);
+        this.memo.put(record, payload);
     }
 }
