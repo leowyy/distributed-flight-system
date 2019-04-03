@@ -8,6 +8,25 @@ public class Constants {
     public static final String DEFAULT_HOST = "127.0.0.1";
     public static final int DEFAULT_PORT = 8080;
 
+    // Invocation Semantics
+    public class InvoSem {
+        public static final int NONE = 0;
+        public static final int AT_LEAST_ONCE = 1;
+        public static final int AT_MOST_ONCE = 2;
+        public static final int DEFAULT = NONE;
+    }
+
+    // Timeout Constants
+    public class Timeout {
+        public static final int DEFAULT_MAX_TIME = 1000;
+        public static final int DEFAULT_NO_TIME = 0;
+        public static final int DEFAULT_MAX_TRIES = 0;
+    }
+
+    public static final double DEFAULT_FAILURE_PROB = 0.0;
+
+
+
     // Type Constant
     public static final int INT_SIZE = 4;
     public static final int FLOAT_SIZE = 4;

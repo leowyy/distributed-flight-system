@@ -7,31 +7,46 @@ import java.net.*;
 import java.util.Arrays;
 import java.util.Scanner;
 
+import java.util.concurrent.TimeoutException;
+
 /**
  * Created by signapoop on 1/4/19.
  */
 class UDPClient {
 
-    private DatagramSocket clientSocket;
+    private DatagramSocket udpSocket;
     private InetAddress IPAddress;
     private int port;
     private int idCounter;
 
+    // Invocation Semantics
+    private int invSem;
 
-    public UDPClient(String ip, int port, boolean debug) throws SocketException, UnknownHostException {
-        this.clientSocket = new DatagramSocket();
+    // Timeout properties
+    private int maxTime;
+    private int maxTries;
+
+    // Failure Probability
+    private double failProb;
+
+
+    public UDPClient(String ip, int port) throws SocketException, UnknownHostException {
+        this.udpSocket = new DatagramSocket();
         this.IPAddress = InetAddress.getByName(ip);
         this.port = port;
         this.idCounter = 0;
+        this.invSem = Constants.InvoSem.DEFAULT;
+        this.setMaxTime(Constants.Timeout.DEFAULT_NO_TIME);
+        this.maxTries = Constants.Timeout.DEFAULT_MAX_TRIES;
+        this.failProb = Constants.DEFAULT_FAILURE_PROB;
     }
 
     public static void main(String[] args)throws Exception {
 
         String host = Constants.DEFAULT_HOST;
         int port = Constants.DEFAULT_PORT;
-        boolean debug = true;
 
-        UDPClient udpClient = new UDPClient(host, port, debug);
+        UDPClient udpClient = new UDPClient(host, port);
 
         Scanner scanner = new Scanner(System.in);
         boolean exit = false;
@@ -71,6 +86,46 @@ class UDPClient {
             }
         }
 
+    public int getInvSem() {
+        return invSem;
+    }
+
+    public void setInvSem(int invSem){
+        this.invSem = invSem;
+    }
+
+    public void setupInvSem(int invSem, int maxTime) throws SocketException {
+        this.invSem = invSem;
+        if (invSem != 0) {
+            setMaxTime(maxTime);
+        }
+    }
+
+    public void setupInvSem(int invSem, int maxTime, int maxTries) throws SocketException {
+        this.invSem = invSem;
+        if (invSem != 0) {
+            setMaxTime(maxTime);
+            setMaxTries(maxTries);
+        }
+    }
+
+    public void setMaxTime (int maxTime) throws SocketException {
+        udpSocket.setSoTimeout(maxTime);
+        this.maxTime = maxTime;
+    }
+
+    public void setMaxTries (int maxTries) {
+        this.maxTries = maxTries;
+    }
+
+    public double getFailProb() {
+        return failProb;
+    }
+
+    public void setFailProb(double failProb) {
+        this.failProb = failProb;
+    }
+
     /**
      * Get new ID and increment global ID
      * @return {@code int} new ID
@@ -82,13 +137,16 @@ class UDPClient {
     }
 
     public void send(byte[] message) throws IOException, InterruptedException{
+        if (Math.random() < this.failProb){
+            System.out.println("Dropping packet to simulate lost request");
+        } else {
+            byte[] header = Utils.marshal(message.length);
+            DatagramPacket headerPacket = new DatagramPacket(header, header.length, this.IPAddress, this.port);
+            this.udpSocket.send(headerPacket);
 
-        byte[] header = Utils.marshal(message.length);
-        DatagramPacket headerPacket = new DatagramPacket(header, header.length, this.IPAddress, this.port);
-        this.clientSocket.send(headerPacket);
-
-        DatagramPacket sendPacket = new DatagramPacket(message, message.length, this.IPAddress, this.port);
-        this.clientSocket.send(sendPacket);
+            DatagramPacket sendPacket = new DatagramPacket(message, message.length, this.IPAddress, this.port);
+            this.udpSocket.send(sendPacket);
+        }
     }
 
 
@@ -99,16 +157,36 @@ class UDPClient {
 
         byte[] header = new byte[4];
         DatagramPacket headerPacket = new DatagramPacket(header, header.length);
-        this.clientSocket.receive(headerPacket);
+        this.udpSocket.receive(headerPacket);
 
         messageLength = Utils.unmarshalInteger(headerPacket.getData(), 0);
 
         byte[] receiveData = new byte[messageLength];
         receivePacket = new DatagramPacket(receiveData, receiveData.length);
-        this.clientSocket.receive(receivePacket);
+        this.udpSocket.receive(receivePacket);
         responseID = Utils.unmarshalInteger(receivePacket.getData(), 0);
 
         return Arrays.copyOfRange(receivePacket.getData(), Constants.INT_SIZE, messageLength);
+    }
+
+    public byte[] sendAndReceive(byte[] message) throws IOException, InterruptedException, TimeoutException{
+        byte[] response = new byte[0];
+        int tries = 0;
+        do{
+            try{
+                this.send(message);
+                response = this.receive(false);
+                break;
+            } catch(SocketTimeoutException e){
+                tries++;
+                if (this.maxTries > 0 && tries >= this.maxTries){
+                    throw new TimeoutException(String.format("Max tries of %d reached.", this.maxTries));
+                }
+                System.out.printf("Timeout %d, retrying...", tries);
+                continue;
+            }
+        } while(this.getInvSem() != Constants.InvoSem.NONE);
+        return response;
     }
 
 }
