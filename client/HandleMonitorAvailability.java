@@ -1,4 +1,5 @@
 package client;
+
 import common.Constants;
 import common.Utils;
 
@@ -7,26 +8,28 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
-/**
- * Created by signapoop on 1/4/19.
- */
-class HandleFlightDetails {
-
+public class HandleMonitorAvailability {
     public static byte[] constructMessage(Scanner scanner, int id) throws UnsupportedEncodingException {
         List message = new ArrayList();
         System.out.println(Constants.SEPARATOR);
-        System.out.println(Constants.ENTER_FLIGHT_ID_MSG);
 
+        System.out.println(Constants.ENTER_FLIGHT_ID_MSG);
         String input = scanner.nextLine();
         int flightId = Integer.parseInt(input);
 
+        System.out.println(Constants.ENTER_MONITOR_INTERVAL_MSG);
+        String monitorInterval = scanner.nextLine();
+        int duration = Integer.parseInt(monitorInterval);
+
         Utils.append(message, id);
-        Utils.append(message, Constants.SERVICE_GET_FLIGHT_DETAILS);
+        Utils.append(message, Constants.SERVICE_MONITOR_AVAILABILITY);
         Utils.appendMessage(message, flightId);
+        Utils.appendMessage(message, duration);
 
         return Utils.byteUnboxing(message);
     }
 
+    // response is any updates sent by the callback
     public static void handleResponse(byte[] response) {
         int ptr = 0;
 
@@ -39,22 +42,12 @@ class HandleFlightDetails {
         int flightId = Utils.unmarshalMsgInteger(response, ptr);
         ptr += Constants.INT_SIZE + Constants.INT_SIZE;
 
-        if (status == Constants.FAIL_STATUS) {
-            System.out.printf(Constants.FAILED_FLIGHT_DETAILS, flightId);
-            return;
+        if (status == Constants.SUCCESS_STATUS) {
+            System.out.printf(Constants.MONITORING_STARTED_MSG, flightId);
         }
-
-        int departureTime = Utils.unmarshalMsgInteger(response, ptr);
-        ptr += Constants.INT_SIZE + Constants.INT_SIZE;
-
-        int availability = Utils.unmarshalMsgInteger(response, ptr);
-        ptr += Constants.INT_SIZE + Constants.INT_SIZE;
-
-        float airfare = Utils.unmarshalMsgFloat(response, ptr);
-        ptr += Constants.INT_SIZE + Constants.FLOAT_SIZE;
-
-        String destination = Utils.unmarshalMsgString(response, ptr);
-
-        System.out.printf(Constants.SUCCESSFUL_FLIGHT_DETAILS, flightId, departureTime, availability, airfare, destination);
+        else if (status == Constants.MONITORING_NEW_UPDATE_STATUS) {
+            int availability = Utils.unmarshalMsgInteger(response, ptr);
+            System.out.printf(Constants.MONITORING_UPDATE_MSG, availability, flightId);
+        }
     }
 }

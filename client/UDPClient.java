@@ -16,7 +16,7 @@ class UDPClient {
 
     private DatagramSocket udpSocket;
     private InetAddress IPAddress;
-    private int port;
+    private int serverPort;
     private int idCounter;
 
     // Invocation Semantics
@@ -30,13 +30,14 @@ class UDPClient {
     private double failProb;
 
 
-    public UDPClient(String ip, int port) throws SocketException, UnknownHostException {
+    public UDPClient(String ip, int serverPort) throws SocketException, UnknownHostException {
         this.udpSocket = new DatagramSocket();
         this.IPAddress = InetAddress.getByName(ip);
-        this.port = port;
+        this.serverPort = serverPort;
         this.idCounter = 0;
         this.invSem = Constants.InvoSem.DEFAULT;
-        this.setMaxTime(Constants.Timeout.DEFAULT_NO_TIME);
+//        this.setMaxTime(Constants.Timeout.DEFAULT_NO_TIME);
+        setMaxTime(Constants.Timeout.DEFAULT_MAX_TIME);
         this.maxTries = Constants.Timeout.DEFAULT_MAX_TRIES;
         this.failProb = Constants.DEFAULT_FAILURE_PROB;
     }
@@ -44,9 +45,9 @@ class UDPClient {
     public static void main(String[] args)throws Exception {
 
         String host = Constants.DEFAULT_HOST;
-        int port = Constants.DEFAULT_PORT;
+        int serverPort = Constants.DEFAULT_SERVER_PORT;
 
-        UDPClient udpClient = new UDPClient(host, port);
+        UDPClient udpClient = new UDPClient(host, serverPort);
 
         Scanner scanner = new Scanner(System.in);
         boolean exit = false;
@@ -54,6 +55,10 @@ class UDPClient {
         while(!exit) {
             System.out.println(Constants.GET_FLIGHT_BY_SOURCE_DESTINATION_SVC_MSG);
             System.out.println(Constants.GET_FLIGHT_DETAILS_SVC_MSG);
+            System.out.println(Constants.RESERVE_SEATS_SVC_MSG);
+            System.out.println(Constants.MONITOR_FLIGHT_AVAILABILITY_SVC_MSG);
+            System.out.println(Constants.IDEMPOTENT_SERVICE);
+            System.out.println(Constants.NON_IDEMPOTENT_SERVICE);
             System.out.println(Constants.EXIT_SVC_MSG);
 
             String message = scanner.nextLine();
@@ -65,14 +70,31 @@ class UDPClient {
             switch (serviceType) {
                 case Constants.SERVICE_GET_FLIGHT_DETAILS:
                     packageByte = HandleFlightDetails.constructMessage(scanner, curID);
-                    udpClient.send(packageByte);
-                    response = udpClient.receive(false);
+                    response = udpClient.sendAndReceive(packageByte);
+//                    udpClient.send(packageByte);
+//                    response = udpClient.receive(false);
                     HandleFlightDetails.handleResponse(response);
                     break;
                 case Constants.SERVICE_GET_FLIGHT_BY_SOURCE_DESTINATION:
-                    int[] flightIds = {0, 2, 3, 4};
-                    packageByte = HandleFlightsBySourceDestination.constructMessage(curID, flightIds);
-                    udpClient.send(packageByte);
+                    packageByte = HandleFlightsBySourceDestination.constructMessage(scanner, curID);
+                    response = udpClient.sendAndReceive(packageByte);
+//                    udpClient.send(packageByte);
+//                    response = udpClient.receive(false);
+                    HandleFlightsBySourceDestination.handleResponse(response);
+                    break;
+                case Constants.SERVICE_RESERVE_SEATS:
+                    packageByte = HandleReserveSeats.constructMessage(scanner, curID);
+                    response = udpClient.sendAndReceive(packageByte);
+//                    udpClient.send(packageByte);
+//                    response = udpClient.receive(false);
+                    HandleReserveSeats.handleResponse(response);
+                    break;
+                case Constants.SERVICE_MONITOR_AVAILABILITY:
+                    packageByte = HandleMonitorAvailability.constructMessage(scanner, curID);
+                    response = udpClient.sendAndReceive(packageByte);
+//                    udpClient.send(packageByte);
+//                    response = udpClient.receive(true);
+                    HandleMonitorAvailability.handleResponse(response);
                     break;
                 case Constants.SERVICE_EXIT:
                     System.out.println(Constants.EXIT_MSG);
@@ -141,10 +163,10 @@ class UDPClient {
             System.out.println("Dropping packet to simulate lost request");
         } else {
             byte[] header = Utils.marshal(message.length);
-            DatagramPacket headerPacket = new DatagramPacket(header, header.length, this.IPAddress, this.port);
+            DatagramPacket headerPacket = new DatagramPacket(header, header.length, this.IPAddress, this.serverPort);
             this.udpSocket.send(headerPacket);
 
-            DatagramPacket sendPacket = new DatagramPacket(message, message.length, this.IPAddress, this.port);
+            DatagramPacket sendPacket = new DatagramPacket(message, message.length, this.IPAddress, this.serverPort);
             this.udpSocket.send(sendPacket);
         }
     }

@@ -2,7 +2,9 @@ package server;
 
 import common.Callback;
 
-import java.net.InetSocketAddress;
+import java.io.IOException;
+import java.net.DatagramSocket;
+import java.net.InetAddress;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -39,7 +41,7 @@ public class FlightManager {
         return null;
     }
 
-    public Boolean reserveSeatsForFlight (int flightId, int numReserve) {
+    public Boolean reserveSeatsForFlight (int flightId, int numReserve) throws IOException, InterruptedException {
         Flight f = this.getFlightById(flightId);
         Boolean ack = f.reserveSeats(numReserve);
 
@@ -51,7 +53,8 @@ public class FlightManager {
         return ack;
     }
 
-    private void sendUpdates (int flightId, int availability) {
+    private void sendUpdates (int flightId, int availability) throws IOException, InterruptedException {
+        if (!this.flightCallbacks.containsKey(flightId)) return;
         ArrayList<Callback> callbacks = this.flightCallbacks.get(flightId); // get the callbacks for this flight
         long currentTime = System.currentTimeMillis();
         Iterator iterator = callbacks.iterator();
@@ -59,7 +62,7 @@ public class FlightManager {
             Callback callback = (Callback) iterator.next();
             if (callback.hasExpired(currentTime)) { // expired callbacks are only removed when there is a potential update to be sent.
                 iterator.remove();
-                System.out.println("Callback removed for client with address " + callback.getInetSocketAddress().toString());
+                System.out.println("Callback removed for client with address " + callback.getClientAddress().toString());
             }
             else {
                 callback.update(availability);
@@ -67,9 +70,9 @@ public class FlightManager {
         }
     }
 
-    public void registerCallback (int flightId, int duration, InetSocketAddress inetSocketAddress) {
+    public void registerCallback (int flightId, int duration, InetAddress inetAddress, int port, DatagramSocket udpSocket) {
         long expiry = System.currentTimeMillis() + (duration * 1000);
-        Callback callback = new Callback(flightId, expiry, inetSocketAddress);
+        Callback callback = new Callback(flightId, expiry, inetAddress, port, udpSocket);
         if (!this.flightCallbacks.containsKey(flightId)) {
             this.flightCallbacks.put(flightId, new ArrayList<>());
         }
