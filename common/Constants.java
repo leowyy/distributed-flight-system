@@ -5,7 +5,7 @@ package common;
  */
 public class Constants {
     // Argument Constant
-    public static final String DEFAULT_HOST = "127.0.0.1";
+    public static final String DEFAULT_HOST = "10.27.249.51";
     public static final int DEFAULT_SERVER_PORT = 8888;
 
     // Invocation Semantics
