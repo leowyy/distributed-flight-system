@@ -13,6 +13,7 @@ public class FlightDetailsReply {
     public String destination;
 
     public FlightDetailsReply() {
+        this(0,0,0,0,0,0,"", "");
     }
 
     public void setId(int id) {

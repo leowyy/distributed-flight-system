@@ -9,7 +9,7 @@ import java.io.IOException;
 public class ServerTopUpAccount {
     public static byte[] handleResponse(int id, byte[] message, FlightManager flightManager) throws IOException, InterruptedException {
         // Deconstruct message
-        TopUpAccountRequest request = (TopUpAccountRequest) Utils.unmarshal(message, TopUpAccountRequest.class);
+        TopUpAccountRequest request = (TopUpAccountRequest) Utils.unmarshal(message, new TopUpAccountRequest());
         int accountId = request.getAccountId();
         float topUpAmount = request.getTopUpAmount();
 

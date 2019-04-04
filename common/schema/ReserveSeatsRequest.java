@@ -8,6 +8,7 @@ public class ReserveSeatsRequest {
     public int numReserve;
 
     public ReserveSeatsRequest() {
+        this(0,0,0,0,0);
     }
 
     public ReserveSeatsRequest(int id, int serviceNum, int accountId, int flightId, int numReserve) {

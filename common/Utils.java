@@ -22,14 +22,9 @@ public class Utils {
     public static byte[] marshal(Object obj) throws UnsupportedEncodingException {
         List message = new ArrayList();
 
-// @TODO
-//        append(message, obj.getId());
-//        append(message, obj.getServiceNum());
-
         Field[] fields = obj.getClass().getDeclaredFields();
         for (Field field: fields) {
             try {
-                appendMessage(message, field.getName());
 
                 Object o = field.get(obj);
                 String type = field.getGenericType().getTypeName().split("[<>]")[0];
@@ -39,7 +34,6 @@ public class Utils {
 
                 switch (type) {
                     case "java.lang.String":
-                    case "class java.lang.String":
                         appendMessage(message,(String) o);
                         break;
                     case "java.lang.Integer":
@@ -51,7 +45,6 @@ public class Utils {
                         appendMessage(message,(float) o);
                         break;
                     case "int[]":
-                    case "class [I":
                         appendMessage(message,(int[]) o);
                         break;
                 }
@@ -63,78 +56,66 @@ public class Utils {
         return Utils.byteUnboxing(message);
     }
 
-    public static Object unmarshal(byte[] b, Class<?> clazz) {
-        Object obj;
-        try {
-            obj = clazz.getConstructor().newInstance();
-        } catch (Exception e) {
-            System.out.printf("Empty constructor not defined for {}\n", clazz);
-            e.printStackTrace();
-            return null;
-        }
+    public static Object unmarshal(byte[] b, Object obj) {
         int ptr = 0;
-        do {
+
+        Field[] fields = obj.getClass().getDeclaredFields();
+
+        for (Field field: fields) {
+
+            String type = field.getGenericType().getTypeName().split("[<>]")[0];
+
             int sourceLength = unmarshalInteger(b, ptr);
             ptr += Constants.INT_SIZE;
 
-            String propertyName = unmarshalString(b, ptr, ptr+sourceLength); // propertyName is null
+//            System.out.println(field.getName());
+//            System.out.println(type);
+//            System.out.println(sourceLength);
 
-            ptr += sourceLength;
-
-            PropertyDescriptor propDetails = null;
-            try {
-                propDetails = new PropertyDescriptor(propertyName, clazz);
-            } catch (IntrospectionException e) {
-                e.printStackTrace();
+            switch (type) {
+                case "java.lang.String":
+                    String stringValue = unmarshalString(b, ptr, ptr+sourceLength);
+                    ptr += sourceLength;
+                    set(obj, field.getName(), stringValue);
+                    break;
+                case "java.lang.Integer":
+                case "int":
+                    int intValue = unmarshalInteger(b, ptr);
+                    ptr += sourceLength;
+                    set(obj, field.getName(), intValue);
+                    break;
+                case "java.lang.Float":
+                case "float":
+                    float floatValue = unmarshalFloat(b, ptr);
+                    ptr += sourceLength;
+                    set(obj, field.getName(), floatValue);
+                    break;
+                case "int[]":
+                    int[] intArrValue = unmarshalIntArray(b, ptr, ptr+sourceLength);
+                    ptr += sourceLength;
+                    set(obj, field.getName(), intArrValue);
+                    break;
             }
-            String type = propDetails.getPropertyType().toString();
-            Method setter = propDetails.getWriteMethod();
-            try {
-                switch (type) {
-                    case "java.lang.String":
-                    case "class java.lang.String":
-                        sourceLength = unmarshalInteger(b, ptr);
-                        ptr += Constants.INT_SIZE;
-
-                        String stringValue = unmarshalString(b, ptr, ptr+sourceLength);
-                        ptr += sourceLength;
-
-                        setter.invoke(obj, stringValue);
-                        break;
-                    case "java.lang.Integer":
-                    case "int":
-                        int intValue = unmarshalMsgInteger(b, ptr);
-                        ptr += Constants.INT_SIZE + Constants.INT_SIZE;
-
-                        setter.invoke(obj, intValue);
-                        break;
-                    case "java.lang.Float":
-                    case "float":
-                        float floatValue = unmarshalMsgFloat(b, ptr);
-                        ptr += Constants.INT_SIZE + Constants.FLOAT_SIZE;
-
-                        setter.invoke(obj, floatValue);
-                        break;
-                    case "int[]":
-                    case "class [I":
-                        int len = Utils.unmarshalInteger(b, ptr);
-                        ptr += Constants.INT_SIZE;
-                        int[] intArrValue = unmarshalIntArray(b, ptr, ptr+len);
-                        setter.invoke(obj, intArrValue);
-                        ptr += len;
-                        break;
-                }
-            } catch (IllegalAccessException e) {
-                e.printStackTrace();
-            } catch (InvocationTargetException e) {
-                e.printStackTrace();
-            }
-
-        } while (ptr < b.length);
-
+        }
         return obj;
     }
 
+    public static boolean set(Object object, String fieldName, Object fieldValue) {
+        Class<?> clazz = object.getClass();
+        while (clazz != null) {
+            try {
+                Field field = clazz.getDeclaredField(fieldName);
+                field.setAccessible(true);
+                field.set(object, fieldValue);
+                return true;
+            } catch (NoSuchFieldException e) {
+                clazz = clazz.getSuperclass();
+            } catch (Exception e) {
+                throw new IllegalStateException(e);
+            }
+        }
+        return false;
+    }
 
     /**
      * Marshaling int into bytes

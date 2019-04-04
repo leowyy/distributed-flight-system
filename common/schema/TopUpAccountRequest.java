@@ -7,6 +7,7 @@ public class TopUpAccountRequest {
     public float topUpAmount;
 
     public TopUpAccountRequest() {
+        this(0,0,0,0);
     }
 
     public TopUpAccountRequest(int id, int serviceNum, int accountId, float topUpAmount) {

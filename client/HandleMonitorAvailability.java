@@ -24,7 +24,7 @@ public class HandleMonitorAvailability {
 
     // response is any updates sent by the callback
     public static int handleResponse(byte[] response) {
-        MonitorAvailabilityReply reply = (MonitorAvailabilityReply) Utils.unmarshal(response, MonitorAvailabilityReply.class);
+        MonitorAvailabilityReply reply = (MonitorAvailabilityReply) Utils.unmarshal(response, new MonitorAvailabilityReply());
         System.out.println(reply.generateOutputMessage());
         return reply.getDuration(); // may need to only return this when status is 'monitoring started'
     }

@@ -11,7 +11,7 @@ import java.util.ArrayList;
 public class ServerFlightsByPrice {
     public static byte[] handleResponse(int id, byte[] message, FlightManager flightManager) throws UnsupportedEncodingException {
         // Deconstruct message
-        FlightsByPriceRequest request = (FlightsByPriceRequest) Utils.unmarshal(message, FlightsByPriceRequest.class);
+        FlightsByPriceRequest request = (FlightsByPriceRequest) Utils.unmarshal(message, new FlightsByPriceRequest());
         float price = request.getPrice();
         ArrayList<Integer> flightIds = flightManager.searchFlightsBelowPrice(price);
 

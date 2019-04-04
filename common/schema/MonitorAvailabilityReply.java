@@ -10,6 +10,7 @@ public class MonitorAvailabilityReply {
     public int availability;
 
     public MonitorAvailabilityReply() {
+        this(0,0,0,0,0);
     }
 
     public MonitorAvailabilityReply(int id, int status, int flightId, int duration, int availability) {

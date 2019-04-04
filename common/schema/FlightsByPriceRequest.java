@@ -6,6 +6,7 @@ public class FlightsByPriceRequest {
     public float price;
 
     public FlightsByPriceRequest() {
+        this(0,0,0);
     }
 
     public FlightsByPriceRequest(int id, int serviceNum, float price) {

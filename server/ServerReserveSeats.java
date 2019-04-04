@@ -10,7 +10,7 @@ import java.io.IOException;
 public class ServerReserveSeats {
     public static byte[] handleResponse(int id, byte[] message, FlightManager flightManager) throws IOException, InterruptedException {
         // Deconstruct message
-        ReserveSeatsRequest request = (ReserveSeatsRequest) Utils.unmarshal(message, ReserveSeatsRequest.class);
+        ReserveSeatsRequest request = (ReserveSeatsRequest) Utils.unmarshal(message, new ReserveSeatsRequest());
         int accountId = request.getAccountId();
         int flightId = request.getFlightId();
         int numReserve = request.getNumReserve();

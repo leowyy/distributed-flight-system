@@ -12,6 +12,7 @@ public class FlightsBySourceDestinationReply {
     public int[] flights;
 
     public FlightsBySourceDestinationReply() {
+        this(0, 0,"", "", new int[0]);
     }
 
     public FlightsBySourceDestinationReply(int id, int status, String source, String destination, int[] flights) {

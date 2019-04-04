@@ -18,6 +18,7 @@ public class FlightDetailsRequest {
     }
 
     public FlightDetailsRequest() {
+        this(0,0,0);
     }
 
     public FlightDetailsRequest(int id, int serviceNum, int flightId) {

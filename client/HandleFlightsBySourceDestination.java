@@ -24,7 +24,7 @@ class HandleFlightsBySourceDestination {
     }
 
     public static void handleResponse(byte[] response) {
-        FlightsBySourceDestinationReply reply = (FlightsBySourceDestinationReply) Utils.unmarshal(response, FlightsBySourceDestinationReply.class);
+        FlightsBySourceDestinationReply reply = (FlightsBySourceDestinationReply) Utils.unmarshal(response, new FlightsBySourceDestinationReply());
         System.out.println(reply.generateOutputMessage());
     }
 }

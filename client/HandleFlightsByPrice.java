@@ -20,7 +20,7 @@ public class HandleFlightsByPrice {
     }
 
     public static void handleResponse(byte[] response) {
-        FlightsByPriceReply flightsByPriceReply = (FlightsByPriceReply) Utils.unmarshal(response, FlightsByPriceReply.class);
+        FlightsByPriceReply flightsByPriceReply = (FlightsByPriceReply) Utils.unmarshal(response, new FlightsByPriceReply());
         System.out.println(flightsByPriceReply.generateOutputMessage());
     }
 }

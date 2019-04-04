@@ -7,12 +7,12 @@ public class ReserveSeatsReply {
     public int status;
     public int flightId;
     public int numReserve;
-
-    public ReserveSeatsReply() {
-    }
-
     public float newBalance;
     public float price;
+
+    public ReserveSeatsReply() {
+        this(0,0,0,0,0,0);
+    }
 
     public ReserveSeatsReply(int id, int status, int flightId, int numReserve, float newBalance, float price) {
         this.id = id;

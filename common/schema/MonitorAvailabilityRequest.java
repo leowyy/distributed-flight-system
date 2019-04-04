@@ -7,6 +7,7 @@ public class MonitorAvailabilityRequest {
     public int duration;
 
     public MonitorAvailabilityRequest() {
+        this(0,0,0,0);
     }
 
     public MonitorAvailabilityRequest(int id, int serviceNum, int flightId, int duration) {

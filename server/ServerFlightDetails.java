@@ -15,7 +15,7 @@ class ServerFlightDetails {
     public static byte[] handleResponse(int id, byte[] message, FlightManager flightManager) throws UnsupportedEncodingException {
         // Deconstruct message
 
-        FlightDetailsRequest request = (FlightDetailsRequest) Utils.unmarshal(message, FlightDetailsRequest.class);
+        FlightDetailsRequest request = (FlightDetailsRequest) Utils.unmarshal(message, new FlightDetailsRequest());
         FlightDetail ret = flightManager.getFlightDetails(request.getFlightId());
 
         FlightDetailsReply reply;

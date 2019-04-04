@@ -23,7 +23,7 @@ class HandleFlightDetails {
     }
 
     public static void handleResponse(byte[] response) {
-        FlightDetailsReply flightDetailsReply = (FlightDetailsReply) Utils.unmarshal(response, FlightDetailsReply.class);
+        FlightDetailsReply flightDetailsReply = (FlightDetailsReply) Utils.unmarshal(response, new FlightDetailsReply());
         System.out.println(flightDetailsReply.generateOutputMessage());
     }
 }

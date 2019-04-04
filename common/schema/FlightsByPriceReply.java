@@ -11,6 +11,7 @@ public class FlightsByPriceReply {
     public int[] flights;
 
     public FlightsByPriceReply() {
+        this(0,0,0,new int[0]);
     }
 
     public FlightsByPriceReply(int id, int status, float price, int[] flights) {

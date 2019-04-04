@@ -23,7 +23,7 @@ public class HandleReserveSeats {
     }
 
     public static void handleResponse(byte[] response) {
-        ReserveSeatsReply reply = (ReserveSeatsReply) Utils.unmarshal(response, ReserveSeatsReply.class);
+        ReserveSeatsReply reply = (ReserveSeatsReply) Utils.unmarshal(response, new ReserveSeatsReply());
         System.out.println(reply.generateOutputString());
 
     }

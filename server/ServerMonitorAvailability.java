@@ -17,7 +17,7 @@ public class ServerMonitorAvailability {
     public static byte[] handleResponse(int id, byte[] message, FlightManager flightManager, InetAddress inetAddress,
                                         int port, DatagramSocket udpSocket) throws UnsupportedEncodingException {
         // Deconstruct message
-        MonitorAvailabilityRequest request = (MonitorAvailabilityRequest) Utils.unmarshal(message, MonitorAvailabilityRequest.class);
+        MonitorAvailabilityRequest request = (MonitorAvailabilityRequest) Utils.unmarshal(message, new MonitorAvailabilityRequest());
         int flightId = request.getFlightId();
         int duration = request.getDuration();
 

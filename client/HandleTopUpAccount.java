@@ -20,7 +20,7 @@ public class HandleTopUpAccount {
     }
 
     public static void handleResponse(byte[] response) {
-        TopUpAccountReply reply = (TopUpAccountReply) Utils.unmarshal(response, TopUpAccountReply.class);
+        TopUpAccountReply reply = (TopUpAccountReply) Utils.unmarshal(response, new TopUpAccountReply());
         System.out.println(reply.generateOutputMessage());
     }
 }

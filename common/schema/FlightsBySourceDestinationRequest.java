@@ -7,6 +7,7 @@ public class FlightsBySourceDestinationRequest {
     public String destination;
 
     public FlightsBySourceDestinationRequest() {
+        this(0,0,"", "");
     }
 
     public FlightsBySourceDestinationRequest(int id, int serviceNum, String source, String destination) {

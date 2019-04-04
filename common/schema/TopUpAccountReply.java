@@ -5,12 +5,12 @@ import common.Constants;
 public class TopUpAccountReply {
     public int id;
     public int accountId;
-
-    public TopUpAccountReply() {
-    }
-
     public float topUpAmount;
     public float newBalance;
+
+    public TopUpAccountReply() {
+        this(0,0,0,0);
+    }
 
     public TopUpAccountReply(int id, int accountId, float topUpAmount, float newBalance) {
         this.id = id;
