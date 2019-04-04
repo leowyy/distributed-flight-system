@@ -29,6 +29,8 @@ class ServerFlightDetails {
 
     public static byte[] constructMessage(int id, int flightId, int departure_time, int availability, float airfare, String source,
                                           String destination) throws UnsupportedEncodingException {
+        // if ret == null
+
         List message = new ArrayList();
 
         Utils.append(message, id);

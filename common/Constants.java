@@ -23,7 +23,8 @@ public class Constants {
         public static final int DEFAULT_MAX_TRIES = 0;
     }
 
-    public static final double DEFAULT_FAILURE_PROB = 0.1;
+    public static final double DEFAULT_SERVER_FAILURE_PROB = 0.1;
+    public static final double DEFAULT_CLIENT_FAILURE_PROB = 0.1;
 
 
 
@@ -37,6 +38,7 @@ public class Constants {
     public static final int SERVICE_RESERVE_SEATS = 3;
     public static final int SERVICE_MONITOR_AVAILABILITY = 4;
     public static final int SERVICE_GET_FLIGHTS_BY_PRICE = 5;
+    public static final int SERVICE_TOP_UP_ACCOUNT = 6;
     public static final int SERVICE_EXIT = -1;
 
     // Main UI Constant
@@ -48,7 +50,7 @@ public class Constants {
     public static final String RESERVE_SEATS_SVC_MSG = "3. Reserve seats for a flight.";
     public static final String MONITOR_FLIGHT_AVAILABILITY_SVC_MSG = "4. Monitor availability for a flight.";
     public static final String FIND_FLIGHT_BY_PRICE_SVC_MSG = "5. Find flights below a certain price.";
-    public static final String NON_IDEMPOTENT_SERVICE = "6. Get flight details.";
+    public static final String TOP_UP_ACCOUNT_MSG = "6. Top up your account.";
     public static final String EXIT_SVC_MSG = "-1. Exit.";
 
     public static final String ERR_MSG = "Error: %s\n";
@@ -73,8 +75,7 @@ public class Constants {
     public static final String PRINT_CLIENT_MESSAGE = "Response ID: %d\nService Type: %d\nClient address: %s\nClient port: %d\nMessage length: %d\n\n";
 
     // Get Flight Details Constant
-    public static final String SUCCESSFUL_FLIGHT_DETAILS = "Flight Details.\nFlight ID: %d\nDeparture time: %d\nAvailability: %d\nAirfare: %f\n" +
-            "Source: %s\nDestination: %s\n";
+    public static final String SUCCESSFUL_FLIGHT_DETAILS = "Flight Details.\nDeparture time: %d\nAirfare: %f\nAvailability: %d\n";
     public static final String FAILED_FLIGHT_DETAILS = "Flight details not found for flight ID %d\n";
 
     // Get Flight by Source Destination
@@ -98,6 +99,6 @@ public class Constants {
 
     // Get Flight by price
     public static final String ENTER_PRICE_MSG = "Enter desired maximum price: ";
-    public static final String FLIGHTS_FOUND_BY_PRICE_MSG = "These are the IDs of the flights found that are cheaper than %d dollars.\n";
-    public static final String FLIGHTS_NOT_FOUND_BY_PRICE_MSG = "No flights found that are cheaper than %d dollars.\n";
+    public static final String FLIGHTS_FOUND_BY_PRICE_MSG = "These are the IDs of the flights found that are cheaper than %f dollars:\n";
+    public static final String FLIGHTS_NOT_FOUND_BY_PRICE_MSG = "No flights found that are cheaper than %f dollars.\n";
 }

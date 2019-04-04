@@ -38,7 +38,7 @@ class UDPClient {
         this.invSem = Constants.InvoSem.NONE;
         setMaxTime(Constants.Timeout.DEFAULT_NO_TIME);
         this.maxTries = Constants.Timeout.DEFAULT_MAX_TRIES;
-        this.failProb = Constants.DEFAULT_FAILURE_PROB;
+        this.failProb = Constants.DEFAULT_CLIENT_FAILURE_PROB;
     }
 
     public static void main(String[] args)throws Exception {
@@ -227,7 +227,7 @@ class UDPClient {
                 break;
             } catch(SocketTimeoutException e){
                 tries++;
-                if (this.maxTries > 0 && tries >= this.maxTries){
+                if (this.maxTries > 0 && tries == this.maxTries){
                     throw new TimeoutException(String.format("Max tries of %d reached.", this.maxTries));
                 }
                 System.out.printf("Timeout %d, retrying...\n", tries);

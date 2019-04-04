@@ -2,6 +2,7 @@ package client;
 
 import common.Constants;
 import common.Utils;
+import common.schema.FlightsByPriceReply;
 
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
@@ -26,24 +27,7 @@ public class HandleFlightsByPrice {
     }
 
     public static void handleResponse(byte[] response) {
-        int ptr = 0;
-
-        int serviceNum = Utils.unmarshalInteger(response, ptr);
-        ptr += Constants.INT_SIZE;
-
-        int status = Utils.unmarshalInteger(response, ptr);
-        ptr += Constants.INT_SIZE;
-
-        int price = Utils.unmarshalMsgInteger(response, ptr);
-        ptr += Constants.INT_SIZE + Constants.INT_SIZE;
-
-        if (status == Constants.FLIGHT_FOUND_STATUS) {
-            int[] flightIds = Utils.unmarshalMsgIntArray(response, ptr);
-            System.out.printf(Constants.FLIGHTS_FOUND_BY_PRICE_MSG, price);
-            System.out.println(Arrays.toString(flightIds));
-        }
-        else if (status == Constants.FLIGHT_NOT_FOUND_STATUS) {
-            System.out.printf(Constants.FLIGHTS_NOT_FOUND_BY_PRICE_MSG, price);
-        }
+        FlightsByPriceReply objPlaceholder = new FlightsByPriceReply();
+        FlightsByPriceReply flightsByPriceReply = Utils.unmarshal(response, objPlaceholder);
     }
 }

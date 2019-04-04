@@ -44,16 +44,26 @@ public class FlightManager {
         return null;
     }
 
-    public int reserveSeatsForFlight (int flightId, int numReserve) throws IOException, InterruptedException {
+    public int reserveSeatsForFlight (int accountId, int flightId, int numReserve) throws IOException, InterruptedException {
         Flight f = this.getFlightById(flightId);
         if (f == null) return Constants.FLIGHT_NOT_FOUND_STATUS;
         if (numReserve < 1) return Constants.NEGATIVE_RESERVATION_QUANTITY_STATUS;
+
+        // check if account has sufficient money to pay for the seats
+        float price = f.getAirfare() * numReserve;
+        if (price > this.accountBalances.get(accountId)) return Constants.NOT_ENOUGH_MONEY_STATUS;
+
         Boolean ack = f.reserveSeats(numReserve);
 
         if (ack) {
+            // deduct from the account balance
+            float balance = this.accountBalances.get(accountId);
+            this.accountBalances.put(accountId, balance - price);
+
             // do callback action for clients that are monitoring this flight
             int availability = f.getAvailability();
             this.sendUpdates(flightId, availability);
+
             return Constants.SEATS_SUCCESSFULLY_RESERVED_STATUS;
         }
         else return Constants.NO_AVAILABILITY_STATUS;

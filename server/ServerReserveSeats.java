@@ -17,7 +17,9 @@ public class ServerReserveSeats {
         ptr += Constants.INT_SIZE + Constants.INT_SIZE;
         int numReserve = Utils.unmarshalMsgInteger(message, ptr);
 
-        int status = flightManager.reserveSeatsForFlight(flightId, numReserve);
+        accountId =
+
+        int status = flightManager.reserveSeatsForFlight(accountId, flightId, numReserve);
 
         // Construct response
         return constructMessage(id, flightId, numReserve, status);

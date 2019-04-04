@@ -25,7 +25,7 @@ class UDPServer {
         this.port = port;
         this.idCounter = 0;
         this.memo = new HashMap<>();
-        this.failProb = Constants.DEFAULT_FAILURE_PROB;
+        this.failProb = Constants.DEFAULT_SERVER_FAILURE_PROB;
     }
 
     public static void main(String[] args)throws Exception {
@@ -45,7 +45,8 @@ class UDPServer {
                 ClientMessage message = udpServer.receive(true);
                 if (debug) message.print();
 
-                handled = udpServer.checkAndSendOldResponse(message);
+                if (Constants.InvoSem.DEFAULT != Constants.InvoSem.AT_MOST_ONCE) handled = false;
+                else handled = udpServer.checkAndSendOldResponse(message);
                 if (!handled) {
                     int curID = udpServer.getID();
                     byte[] packageByte;
@@ -149,6 +150,7 @@ class UDPServer {
         if (isKeyPresent) {
             byte[] packageByte = this.memo.get(record);
             try{
+                System.out.println("Duplicate request detected. Resending...");
                 this.send(packageByte, message.clientAddress, message.clientPort);
             } catch (Exception e){
                 e.printStackTrace();
