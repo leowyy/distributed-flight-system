@@ -52,6 +52,11 @@ class UDPClient {
         Scanner scanner = new Scanner(System.in);
         boolean exit = false;
 
+        System.out.println(Constants.WELCOME_MSG);
+        System.out.println(Constants.REQUEST_ACC_ID_MSG);
+        String message = scanner.nextLine();
+        int accountId = Integer.parseInt(message);
+
         while(!exit) {
             System.out.println(Constants.GET_FLIGHT_BY_SOURCE_DESTINATION_SVC_MSG);
             System.out.println(Constants.GET_FLIGHT_DETAILS_SVC_MSG);
@@ -79,7 +84,7 @@ class UDPClient {
                     HandleFlightsBySourceDestination.handleResponse(response);
                     break;
                 case Constants.SERVICE_RESERVE_SEATS:
-                    packageByte = HandleReserveSeats.constructMessage(scanner, curID);
+                    packageByte = HandleReserveSeats.constructMessage(scanner, accountId, curID);
                     response = udpClient.sendAndReceive(packageByte);
                     HandleReserveSeats.handleResponse(response);
                     break;
