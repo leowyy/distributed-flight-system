@@ -5,25 +5,28 @@ import common.schema.MonitorAvailabilityReply;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
-import java.net.*;
+import java.net.DatagramPacket;
+import java.net.DatagramSocket;
+import java.net.InetAddress;
 import java.util.ArrayList;
 import java.util.List;
 
 public class Callback {
     private final DatagramSocket udpSocket;
-    private int flightId;
-    private long expiry;
     private final InetAddress clientAddress;
     private final int clientPort;
+    private int flightId;
+    private long expiry;
 
-    public Callback (int flightId, long expiry, InetAddress clientAddress, int clientPort, DatagramSocket udpSocket) {
+    public Callback(int flightId, long expiry, InetAddress clientAddress, int clientPort, DatagramSocket udpSocket) {
         this.flightId = flightId;
         this.expiry = expiry;
         this.clientAddress = clientAddress;
         this.clientPort = clientPort;
         this.udpSocket = udpSocket;
     }
-    public void update (int availability) throws IOException, InterruptedException {
+
+    public void update(int availability) throws IOException, InterruptedException {
         // need to do some sending
         byte[] packageByte = this.constructMessage(0, availability); // ID is just arbitrarily set as 0 for now
         packageByte = addHeaders(packageByte, 0, Constants.SERVICE_MONITOR_AVAILABILITY);
@@ -60,7 +63,7 @@ public class Callback {
         this.udpSocket.send(sendPacket);
     }
 
-    private byte[] addHeaders (byte[] packageByte, int id, int serviceNum) throws IOException  {
+    private byte[] addHeaders(byte[] packageByte, int id, int serviceNum) throws IOException {
         List message = new ArrayList();
         Utils.append(message, id);
         Utils.append(message, serviceNum);

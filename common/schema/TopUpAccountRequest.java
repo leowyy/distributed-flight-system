@@ -7,7 +7,7 @@ public class TopUpAccountRequest {
     public float topUpAmount;
 
     public TopUpAccountRequest() {
-        this(0,0,0,0);
+        this(0, 0, 0, 0);
     }
 
     public TopUpAccountRequest(int id, int serviceNum, int accountId, float topUpAmount) {
@@ -21,28 +21,28 @@ public class TopUpAccountRequest {
         return id;
     }
 
-    public int getServiceNum() {
-        return serviceNum;
-    }
-
-    public int getAccountId() {
-        return accountId;
-    }
-
-    public float getTopUpAmount() {
-        return topUpAmount;
-    }
-
     public void setId(int id) {
         this.id = id;
+    }
+
+    public int getServiceNum() {
+        return serviceNum;
     }
 
     public void setServiceNum(int serviceNum) {
         this.serviceNum = serviceNum;
     }
 
+    public int getAccountId() {
+        return accountId;
+    }
+
     public void setAccountId(int accountId) {
         this.accountId = accountId;
+    }
+
+    public float getTopUpAmount() {
+        return topUpAmount;
     }
 
     public void setTopUpAmount(float topUpAmount) {

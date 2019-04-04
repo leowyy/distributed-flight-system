@@ -19,9 +19,8 @@ public class ServerFlightsByPrice {
         if (flightIds.size() > 0) {
             int[] intArray = flightIds.stream().mapToInt(Integer::intValue).toArray();
             reply = new FlightsByPriceReply(id, Constants.FLIGHT_FOUND_STATUS, price, intArray);
-        }
-        else {
-            int[] arrayPlaceholder = {0,0};
+        } else {
+            int[] arrayPlaceholder = {0, 0};
             reply = new FlightsByPriceReply(id, Constants.FLIGHT_NOT_FOUND_STATUS, price, arrayPlaceholder);
         }
         return Utils.marshal(reply);

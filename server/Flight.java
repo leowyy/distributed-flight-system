@@ -48,12 +48,11 @@ public class Flight {
         return date;
     }
 
-    public Boolean reserveSeats (int numReserve) {
+    public Boolean reserveSeats(int numReserve) {
         if (this.availability >= numReserve) {
             this.availability -= numReserve;
             return true;
-        }
-        else {
+        } else {
             return false;
         }
     }

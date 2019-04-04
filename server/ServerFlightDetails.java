@@ -21,8 +21,7 @@ class ServerFlightDetails {
         FlightDetailsReply reply;
         if (ret == null) {
             reply = new FlightDetailsReply(id, Constants.FLIGHT_NOT_FOUND_STATUS, request.getFlightId(), -1, -1, -1, "nil", "nil");
-        }
-        else {
+        } else {
             reply = new FlightDetailsReply(id, Constants.FLIGHT_FOUND_STATUS, ret.flightId, ret.departureTime, ret.availability, ret.airfare, ret.source, ret.destination);
         }
         return Utils.marshal(reply);

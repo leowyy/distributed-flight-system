@@ -3,8 +3,12 @@ package server;
 import common.Constants;
 import common.Utils;
 
-import java.net.*;
-import java.io.*;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.net.DatagramPacket;
+import java.net.DatagramSocket;
+import java.net.InetAddress;
+import java.net.SocketException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -30,7 +34,7 @@ class UDPServer {
         this.failProb = Constants.DEFAULT_SERVER_FAILURE_PROB;
     }
 
-    public static void main(String[] args)throws Exception {
+    public static void main(String[] args) throws Exception {
         boolean moreQuotes = true;
 
         int port = Constants.DEFAULT_SERVER_PORT;
@@ -102,7 +106,7 @@ class UDPServer {
         udpServer.udpSocket.close();
     }
 
-    private byte[] addHeaders (byte[] packageByte, int id, int serviceNum) throws IOException  {
+    private byte[] addHeaders(byte[] packageByte, int id, int serviceNum) throws IOException {
         List message = new ArrayList();
         Utils.append(message, id);
         Utils.append(message, serviceNum);
@@ -115,16 +119,15 @@ class UDPServer {
         return baos.toByteArray();
     }
 
-    private int getID(){
+    private int getID() {
         this.idCounter++;
         return this.idCounter;
     }
 
-    private void send(byte[] message, InetAddress clientAddress, int clientPort) throws IOException, InterruptedException{
+    private void send(byte[] message, InetAddress clientAddress, int clientPort) throws IOException, InterruptedException {
         if (Math.random() < this.failProb) {
             System.out.println("Server dropping packet to simulate lost request");
-        }
-        else {
+        } else {
             byte[] header = Utils.marshal(message.length);
             DatagramPacket headerPacket = new DatagramPacket(header, header.length, clientAddress, clientPort);
             this.udpSocket.send(headerPacket);
@@ -155,7 +158,7 @@ class UDPServer {
 
         return new ClientMessage(
                 responseID,
-                Arrays.copyOfRange(receivePacket.getData(), 2*Constants.INT_SIZE, messageLength),
+                Arrays.copyOfRange(receivePacket.getData(), 2 * Constants.INT_SIZE, messageLength),
                 clientAddress,
                 clientPort,
                 serviceType,
@@ -163,22 +166,22 @@ class UDPServer {
         );
     }
 
-    private boolean checkAndSendOldResponse(ClientMessage message){
+    private boolean checkAndSendOldResponse(ClientMessage message) {
         ClientRecord record = new ClientRecord(message.clientAddress, message.clientPort, message.responseId);
         boolean isKeyPresent = this.memo.containsKey(record);
         if (isKeyPresent) {
             byte[] packageByte = this.memo.get(record);
-            try{
+            try {
                 System.out.println("Duplicate request detected. Resending...");
                 this.send(packageByte, message.clientAddress, message.clientPort);
-            } catch (Exception e){
+            } catch (Exception e) {
                 e.printStackTrace();
             }
         }
         return isKeyPresent;
     }
 
-    private void updateMemo(ClientMessage message, byte[] payload){
+    private void updateMemo(ClientMessage message, byte[] payload) {
         ClientRecord record = new ClientRecord(message.clientAddress, message.clientPort, message.responseId);
         this.memo.put(record, payload);
     }

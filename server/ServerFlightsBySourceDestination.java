@@ -20,8 +20,7 @@ public class ServerFlightsBySourceDestination {
         if (flightIds.size() > 0) {
             int[] intArray = flightIds.stream().mapToInt(Integer::intValue).toArray();
             reply = new FlightsBySourceDestinationReply(id, Constants.FLIGHT_FOUND_STATUS, source, destination, intArray);
-        }
-        else {
+        } else {
             int[] arrayPlaceholder = {0, 0};
             reply = new FlightsBySourceDestinationReply(id, Constants.FLIGHT_NOT_FOUND_STATUS, source, destination, arrayPlaceholder);
         }

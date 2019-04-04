@@ -7,7 +7,7 @@ public class FlightsBySourceDestinationRequest {
     public String destination;
 
     public FlightsBySourceDestinationRequest() {
-        this(0,0,"", "");
+        this(0, 0, "", "");
     }
 
     public FlightsBySourceDestinationRequest(int id, int serviceNum, String source, String destination) {
@@ -21,28 +21,28 @@ public class FlightsBySourceDestinationRequest {
         return id;
     }
 
-    public int getServiceNum() {
-        return serviceNum;
-    }
-
-    public String getSource() {
-        return source;
-    }
-
-    public String getDestination() {
-        return destination;
-    }
-
     public void setId(int id) {
         this.id = id;
+    }
+
+    public int getServiceNum() {
+        return serviceNum;
     }
 
     public void setServiceNum(int serviceNum) {
         this.serviceNum = serviceNum;
     }
 
+    public String getSource() {
+        return source;
+    }
+
     public void setSource(String source) {
         this.source = source;
+    }
+
+    public String getDestination() {
+        return destination;
     }
 
     public void setDestination(String destination) {

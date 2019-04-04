@@ -1,4 +1,5 @@
 package client;
+
 import common.Constants;
 import common.Utils;
 import common.schema.FlightDetailsReply;

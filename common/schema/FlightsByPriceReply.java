@@ -11,7 +11,7 @@ public class FlightsByPriceReply {
     public int[] flights;
 
     public FlightsByPriceReply() {
-        this(0,0,0,new int[0]);
+        this(0, 0, 0, new int[0]);
     }
 
     public FlightsByPriceReply(int id, int status, float price, int[] flights) {
@@ -25,28 +25,28 @@ public class FlightsByPriceReply {
         return id;
     }
 
-    public int getStatus() {
-        return status;
-    }
-
-    public float getPrice() {
-        return price;
-    }
-
-    public int[] getFlights() {
-        return flights;
-    }
-
     public void setId(int id) {
         this.id = id;
+    }
+
+    public int getStatus() {
+        return status;
     }
 
     public void setStatus(int status) {
         this.status = status;
     }
 
+    public float getPrice() {
+        return price;
+    }
+
     public void setPrice(float price) {
         this.price = price;
+    }
+
+    public int[] getFlights() {
+        return flights;
     }
 
     public void setFlights(int[] flights) {
@@ -56,11 +56,9 @@ public class FlightsByPriceReply {
     public String generateOutputMessage() {
         if (this.status == Constants.FLIGHT_FOUND_STATUS) {
             return String.format(Constants.FLIGHTS_FOUND_BY_PRICE_MSG, this.price) + Arrays.toString(this.flights);
-        }
-        else if (this.status == Constants.FLIGHT_NOT_FOUND_STATUS) {
+        } else if (this.status == Constants.FLIGHT_NOT_FOUND_STATUS) {
             return String.format(Constants.FLIGHTS_NOT_FOUND_BY_PRICE_MSG, this.price);
-        }
-        else {
+        } else {
             return "Something went wrong. Status was invalid.";
         }
     }

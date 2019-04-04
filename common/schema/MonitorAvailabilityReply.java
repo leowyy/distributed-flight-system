@@ -10,7 +10,7 @@ public class MonitorAvailabilityReply {
     public int availability;
 
     public MonitorAvailabilityReply() {
-        this(0,0,0,0,0);
+        this(0, 0, 0, 0, 0);
     }
 
     public MonitorAvailabilityReply(int id, int status, int flightId, int duration, int availability) {
@@ -25,36 +25,36 @@ public class MonitorAvailabilityReply {
         return id;
     }
 
-    public int getStatus() {
-        return status;
-    }
-
-    public int getFlightId() {
-        return flightId;
-    }
-
-    public int getDuration() {
-        return duration;
-    }
-
-    public int getAvailability() {
-        return availability;
-    }
-
     public void setId(int id) {
         this.id = id;
+    }
+
+    public int getStatus() {
+        return status;
     }
 
     public void setStatus(int status) {
         this.status = status;
     }
 
+    public int getFlightId() {
+        return flightId;
+    }
+
     public void setFlightId(int flightId) {
         this.flightId = flightId;
     }
 
+    public int getDuration() {
+        return duration;
+    }
+
     public void setDuration(int duration) {
         this.duration = duration;
+    }
+
+    public int getAvailability() {
+        return availability;
     }
 
     public void setAvailability(int availability) {
@@ -64,11 +64,9 @@ public class MonitorAvailabilityReply {
     public String generateOutputMessage() {
         if (status == Constants.FLIGHT_FOUND_STATUS) {
             return String.format(Constants.MONITORING_STARTED_MSG, this.flightId);
-        }
-        else if (status == Constants.MONITORING_NEW_UPDATE_STATUS) {
+        } else if (status == Constants.MONITORING_NEW_UPDATE_STATUS) {
             return String.format(Constants.MONITORING_UPDATE_MSG, this.availability, this.flightId);
-        }
-        else {
+        } else {
             return "Something went wrong. Status was invalid.";
         }
     }

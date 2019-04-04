@@ -6,7 +6,7 @@ public class FlightsByPriceRequest {
     public float price;
 
     public FlightsByPriceRequest() {
-        this(0,0,0);
+        this(0, 0, 0);
     }
 
     public FlightsByPriceRequest(int id, int serviceNum, float price) {
@@ -19,20 +19,20 @@ public class FlightsByPriceRequest {
         return id;
     }
 
-    public int getServiceNum() {
-        return serviceNum;
-    }
-
-    public float getPrice() {
-        return price;
-    }
-
     public void setId(int id) {
         this.id = id;
     }
 
+    public int getServiceNum() {
+        return serviceNum;
+    }
+
     public void setServiceNum(int serviceNum) {
         this.serviceNum = serviceNum;
+    }
+
+    public float getPrice() {
+        return price;
     }
 
     public void setPrice(float price) {

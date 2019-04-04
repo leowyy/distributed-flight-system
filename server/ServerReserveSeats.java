@@ -18,8 +18,7 @@ public class ServerReserveSeats {
         float price;
         if (status != Constants.FLIGHT_NOT_FOUND_STATUS) {
             price = flightManager.getFlightDetails(flightId).airfare * numReserve;
-        }
-        else price = 0;
+        } else price = 0;
         float newBalance = flightManager.getBalanceOrSetUp(accountId);
         // Construct response
         ReserveSeatsReply reply = new ReserveSeatsReply(id, status, flightId, numReserve, newBalance, price);

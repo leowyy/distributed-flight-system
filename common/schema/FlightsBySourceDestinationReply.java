@@ -12,7 +12,7 @@ public class FlightsBySourceDestinationReply {
     public int[] flights;
 
     public FlightsBySourceDestinationReply() {
-        this(0, 0,"", "", new int[0]);
+        this(0, 0, "", "", new int[0]);
     }
 
     public FlightsBySourceDestinationReply(int id, int status, String source, String destination, int[] flights) {
@@ -27,36 +27,36 @@ public class FlightsBySourceDestinationReply {
         return id;
     }
 
-    public String getSource() {
-        return source;
-    }
-
-    public String getDestination() {
-        return destination;
-    }
-
-    public int getStatus() {
-        return status;
-    }
-
-    public int[] getFlights() {
-        return flights;
-    }
-
     public void setId(int id) {
         this.id = id;
+    }
+
+    public String getSource() {
+        return source;
     }
 
     public void setSource(String source) {
         this.source = source;
     }
 
+    public String getDestination() {
+        return destination;
+    }
+
     public void setDestination(String destination) {
         this.destination = destination;
     }
 
+    public int getStatus() {
+        return status;
+    }
+
     public void setStatus(int status) {
         this.status = status;
+    }
+
+    public int[] getFlights() {
+        return flights;
     }
 
     public void setFlights(int[] flights) {
@@ -66,11 +66,9 @@ public class FlightsBySourceDestinationReply {
     public String generateOutputMessage() {
         if (this.status == Constants.FLIGHT_FOUND_STATUS) {
             return String.format(Constants.FLIGHTS_FOUND_MSG) + Arrays.toString(this.flights);
-        }
-        else if (this.status == Constants.FLIGHT_NOT_FOUND_STATUS) {
+        } else if (this.status == Constants.FLIGHT_NOT_FOUND_STATUS) {
             return String.format(Constants.NO_FLIGHTS_FOUND_MSG);
-        }
-        else {
+        } else {
             return "Something went wrong. Status was invalid.";
         }
     }

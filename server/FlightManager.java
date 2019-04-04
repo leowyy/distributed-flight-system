@@ -22,7 +22,14 @@ public class FlightManager {
         this.accountBalances = new HashMap<>();
     }
 
-    public ArrayList<Integer> getFlightsBySourceDestination (String source, String destination) {
+    public static void main(String[] args) {
+        FlightManager manager = new FlightManager();
+        manager.initialiseDummyData();
+        FlightDetail foo = manager.getFlightDetails(1);
+        foo.print();
+    }
+
+    public ArrayList<Integer> getFlightsBySourceDestination(String source, String destination) {
         ArrayList<Integer> flightIds = new ArrayList<>();
         for (Flight f : this.flights) {
             if (source.equalsIgnoreCase(f.getSource()) && destination.equalsIgnoreCase(f.getDestination())) {
@@ -33,7 +40,7 @@ public class FlightManager {
     }
 
     // return flight details in string to be unpacked, or in class, or json, or some other way?
-    public FlightDetail getFlightDetails (int flightId) {
+    public FlightDetail getFlightDetails(int flightId) {
 
         for (Flight f : this.flights) {
             if (flightId == f.getFlightId()) {
@@ -44,7 +51,7 @@ public class FlightManager {
         return null;
     }
 
-    public int reserveSeatsForFlight (int accountId, int flightId, int numReserve) throws IOException, InterruptedException {
+    public int reserveSeatsForFlight(int accountId, int flightId, int numReserve) throws IOException, InterruptedException {
         Flight f = this.getFlightById(flightId);
         if (f == null) return Constants.FLIGHT_NOT_FOUND_STATUS;
         if (numReserve < 1) return Constants.NEGATIVE_RESERVATION_QUANTITY_STATUS;
@@ -65,11 +72,10 @@ public class FlightManager {
             this.sendUpdates(flightId, availability);
 
             return Constants.SEATS_SUCCESSFULLY_RESERVED_STATUS;
-        }
-        else return Constants.NO_AVAILABILITY_STATUS;
+        } else return Constants.NO_AVAILABILITY_STATUS;
     }
 
-    private void sendUpdates (int flightId, int availability) throws IOException, InterruptedException {
+    private void sendUpdates(int flightId, int availability) throws IOException, InterruptedException {
         if (!this.flightCallbacks.containsKey(flightId)) return;
         ArrayList<Callback> callbacks = this.flightCallbacks.get(flightId); // get the callbacks for this flight
         long currentTime = System.currentTimeMillis();
@@ -79,14 +85,13 @@ public class FlightManager {
             if (callback.hasExpired(currentTime)) { // expired callbacks are only removed when there is a potential update to be sent.
                 iterator.remove();
                 System.out.println("Callback removed for client with address " + callback.getClientAddress().toString());
-            }
-            else {
+            } else {
                 callback.update(availability);
             }
         }
     }
 
-    public void registerCallback (int flightId, int duration, InetAddress inetAddress, int port, DatagramSocket udpSocket) {
+    public void registerCallback(int flightId, int duration, InetAddress inetAddress, int port, DatagramSocket udpSocket) {
         long expiry = System.currentTimeMillis() + (duration * 1000);
         Callback callback = new Callback(flightId, expiry, inetAddress, port, udpSocket);
         if (!this.flightCallbacks.containsKey(flightId)) {
@@ -115,17 +120,16 @@ public class FlightManager {
         return this.accountBalances.get(accountId);
     }
 
-    public float getBalanceOrSetUp (int accountId) {
+    public float getBalanceOrSetUp(int accountId) {
         if (this.accountBalances.containsKey(accountId)) {
             return this.accountBalances.get(accountId);
-        }
-        else {
+        } else {
             this.accountBalances.put(accountId, (float) 0);
             return (float) 0;
         }
     }
 
-    private Flight getFlightById (int flightId) {
+    private Flight getFlightById(int flightId) {
         for (Flight f : this.flights) {
             if (flightId == f.getFlightId()) {
                 return f;
@@ -134,17 +138,10 @@ public class FlightManager {
         return null;
     }
 
-    public void initialiseDummyData () {
+    public void initialiseDummyData() {
         this.flights.add(new Flight(1, "a", "a", 0, 10, 100, "25"));
         this.flights.add(new Flight(2, "b", "b", 1, 15, 200, "25"));
         this.flights.add(new Flight(3, "c", "c", 2, 20, 300, "25"));
 
-    }
-
-    public static void main(String[] args){
-        FlightManager manager = new FlightManager();
-        manager.initialiseDummyData();
-        FlightDetail foo = manager.getFlightDetails(1);
-        foo.print();
     }
 }

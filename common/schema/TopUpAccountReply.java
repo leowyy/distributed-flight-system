@@ -9,7 +9,7 @@ public class TopUpAccountReply {
     public float newBalance;
 
     public TopUpAccountReply() {
-        this(0,0,0,0);
+        this(0, 0, 0, 0);
     }
 
     public TopUpAccountReply(int id, int accountId, float topUpAmount, float newBalance) {
@@ -23,28 +23,28 @@ public class TopUpAccountReply {
         return id;
     }
 
-    public int getAccountId() {
-        return accountId;
-    }
-
-    public float getTopUpAmount() {
-        return topUpAmount;
-    }
-
-    public float getNewBalance() {
-        return newBalance;
-    }
-
     public void setId(int id) {
         this.id = id;
+    }
+
+    public int getAccountId() {
+        return accountId;
     }
 
     public void setAccountId(int accountId) {
         this.accountId = accountId;
     }
 
+    public float getTopUpAmount() {
+        return topUpAmount;
+    }
+
     public void setTopUpAmount(float topUpAmount) {
         this.topUpAmount = topUpAmount;
+    }
+
+    public float getNewBalance() {
+        return newBalance;
     }
 
     public void setNewBalance(float newBalance) {

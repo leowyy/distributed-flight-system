@@ -5,20 +5,8 @@ public class FlightDetailsRequest {
     public int serviceNum;
     public int flightId;
 
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public void setServiceNum(int serviceNum) {
-        this.serviceNum = serviceNum;
-    }
-
-    public void setFlightId(int flightId) {
-        this.flightId = flightId;
-    }
-
     public FlightDetailsRequest() {
-        this(0,0,0);
+        this(0, 0, 0);
     }
 
     public FlightDetailsRequest(int id, int serviceNum, int flightId) {
@@ -31,11 +19,23 @@ public class FlightDetailsRequest {
         return id;
     }
 
+    public void setId(int id) {
+        this.id = id;
+    }
+
     public int getServiceNum() {
         return serviceNum;
     }
 
+    public void setServiceNum(int serviceNum) {
+        this.serviceNum = serviceNum;
+    }
+
     public int getFlightId() {
         return flightId;
+    }
+
+    public void setFlightId(int flightId) {
+        this.flightId = flightId;
     }
 }

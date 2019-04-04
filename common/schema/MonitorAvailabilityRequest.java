@@ -7,7 +7,7 @@ public class MonitorAvailabilityRequest {
     public int duration;
 
     public MonitorAvailabilityRequest() {
-        this(0,0,0,0);
+        this(0, 0, 0, 0);
     }
 
     public MonitorAvailabilityRequest(int id, int serviceNum, int flightId, int duration) {
@@ -21,28 +21,28 @@ public class MonitorAvailabilityRequest {
         return id;
     }
 
-    public int getServiceNum() {
-        return serviceNum;
-    }
-
-    public int getFlightId() {
-        return flightId;
-    }
-
-    public int getDuration() {
-        return duration;
-    }
-
     public void setId(int id) {
         this.id = id;
+    }
+
+    public int getServiceNum() {
+        return serviceNum;
     }
 
     public void setServiceNum(int serviceNum) {
         this.serviceNum = serviceNum;
     }
 
+    public int getFlightId() {
+        return flightId;
+    }
+
     public void setFlightId(int flightId) {
         this.flightId = flightId;
+    }
+
+    public int getDuration() {
+        return duration;
     }
 
     public void setDuration(int duration) {
