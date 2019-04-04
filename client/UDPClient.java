@@ -48,6 +48,10 @@ class UDPClient {
 
         String host = Constants.DEFAULT_HOST;
         int serverPort = Constants.DEFAULT_SERVER_PORT;
+        if (args.length >= 2) {
+            host = args[0];
+            serverPort = Integer.parseInt(args[1]);
+        }
 
         UDPClient udpClient = new UDPClient(host, serverPort);
         udpClient.setInvSem(Constants.InvoSem.DEFAULT);
