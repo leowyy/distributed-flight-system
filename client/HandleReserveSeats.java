@@ -6,8 +6,6 @@ import common.schema.ReserveSeatsReply;
 import common.schema.ReserveSeatsRequest;
 
 import java.io.UnsupportedEncodingException;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Scanner;
 
 public class HandleReserveSeats {
@@ -25,7 +23,7 @@ public class HandleReserveSeats {
     }
 
     public static void handleResponse(byte[] response) {
-        ReserveSeatsReply reply = Utils.unmarshal(response, ReserveSeatsReply.class);
+        ReserveSeatsReply reply = (ReserveSeatsReply) Utils.unmarshal(response, ReserveSeatsReply.class);
         System.out.println(reply.generateOutputString());
 
     }

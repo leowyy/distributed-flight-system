@@ -6,8 +6,6 @@ import common.schema.FlightDetailsReply;
 import common.schema.FlightDetailsRequest;
 
 import java.io.UnsupportedEncodingException;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Created by signapoop on 1/4/19.
@@ -17,7 +15,7 @@ class ServerFlightDetails {
     public static byte[] handleResponse(int id, byte[] message, FlightManager flightManager) throws UnsupportedEncodingException {
         // Deconstruct message
 
-        FlightDetailsRequest request = Utils.unmarshal(message, FlightDetailsRequest.class);
+        FlightDetailsRequest request = (FlightDetailsRequest) Utils.unmarshal(message, FlightDetailsRequest.class);
         FlightDetail ret = flightManager.getFlightDetails(request.getFlightId());
 
         FlightDetailsReply reply;

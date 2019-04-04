@@ -7,12 +7,11 @@ import common.schema.FlightsBySourceDestinationRequest;
 
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
-import java.util.List;
 
 public class ServerFlightsBySourceDestination {
     public static byte[] handleResponse(int id, byte[] message, FlightManager flightManager) throws UnsupportedEncodingException {
         // Deconstruct message
-        FlightsBySourceDestinationRequest request = Utils.unmarshal(message, FlightsBySourceDestinationRequest.class);
+        FlightsBySourceDestinationRequest request = (FlightsBySourceDestinationRequest) Utils.unmarshal(message, FlightsBySourceDestinationRequest.class);
         String source = request.getSource();
         String destination = request.getDestination();
         ArrayList<Integer> flightIds = flightManager.getFlightsBySourceDestination(source, destination);

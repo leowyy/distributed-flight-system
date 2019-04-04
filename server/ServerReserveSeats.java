@@ -1,19 +1,15 @@
 package server;
 
-import common.Constants;
 import common.Utils;
 import common.schema.ReserveSeatsReply;
 import common.schema.ReserveSeatsRequest;
 
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
-import java.util.ArrayList;
-import java.util.List;
 
 public class ServerReserveSeats {
     public static byte[] handleResponse(int id, byte[] message, FlightManager flightManager) throws IOException, InterruptedException {
         // Deconstruct message
-        ReserveSeatsRequest request = Utils.unmarshal(message, ReserveSeatsRequest.class);
+        ReserveSeatsRequest request = (ReserveSeatsRequest) Utils.unmarshal(message, ReserveSeatsRequest.class);
         int accountId = request.getAccountId();
         int flightId = request.getFlightId();
         int numReserve = request.getNumReserve();

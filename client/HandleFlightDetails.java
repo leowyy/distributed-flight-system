@@ -3,11 +3,8 @@ import common.Constants;
 import common.Utils;
 import common.schema.FlightDetailsReply;
 import common.schema.FlightDetailsRequest;
-import server.Flight;
 
 import java.io.UnsupportedEncodingException;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Scanner;
 
 /**
@@ -25,7 +22,7 @@ class HandleFlightDetails {
     }
 
     public static void handleResponse(byte[] response) {
-        FlightDetailsReply flightDetailsReply = Utils.unmarshal(response, FlightDetailsReply.class);
+        FlightDetailsReply flightDetailsReply = (FlightDetailsReply) Utils.unmarshal(response, FlightDetailsReply.class);
         System.out.println(flightDetailsReply.generateOutputMessage());
     }
 }

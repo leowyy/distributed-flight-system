@@ -63,7 +63,7 @@ class UDPClient {
             System.out.println(Constants.RESERVE_SEATS_SVC_MSG);
             System.out.println(Constants.MONITOR_FLIGHT_AVAILABILITY_SVC_MSG);
             System.out.println(Constants.FIND_FLIGHT_BY_PRICE_SVC_MSG);
-            System.out.println(Constants.NON_IDEMPOTENT_SERVICE);
+            System.out.println(Constants.TOP_UP_ACCOUNT_MSG);
             System.out.println(Constants.EXIT_SVC_MSG);
 
             String message = scanner.nextLine();

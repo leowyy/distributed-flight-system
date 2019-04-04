@@ -8,8 +8,6 @@ import common.schema.MonitorAvailabilityRequest;
 import java.io.UnsupportedEncodingException;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
-import java.util.ArrayList;
-import java.util.List;
 
 
 // for UDPServer: packageByte = ServerFlightsBySourceDestination.handleResponse(curID, message.payload, flightManager,
@@ -19,7 +17,7 @@ public class ServerMonitorAvailability {
     public static byte[] handleResponse(int id, byte[] message, FlightManager flightManager, InetAddress inetAddress,
                                         int port, DatagramSocket udpSocket) throws UnsupportedEncodingException {
         // Deconstruct message
-        MonitorAvailabilityRequest request = Utils.unmarshal(message, MonitorAvailabilityRequest.class);
+        MonitorAvailabilityRequest request = (MonitorAvailabilityRequest) Utils.unmarshal(message, MonitorAvailabilityRequest.class);
         int flightId = request.getFlightId();
         int duration = request.getDuration();
 

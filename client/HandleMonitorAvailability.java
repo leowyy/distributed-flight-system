@@ -6,8 +6,6 @@ import common.schema.MonitorAvailabilityReply;
 import common.schema.MonitorAvailabilityRequest;
 
 import java.io.UnsupportedEncodingException;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Scanner;
 
 public class HandleMonitorAvailability {
@@ -26,7 +24,7 @@ public class HandleMonitorAvailability {
 
     // response is any updates sent by the callback
     public static int handleResponse(byte[] response) {
-        MonitorAvailabilityReply reply = Utils.unmarshal(response, MonitorAvailabilityReply.class);
+        MonitorAvailabilityReply reply = (MonitorAvailabilityReply) Utils.unmarshal(response, MonitorAvailabilityReply.class);
         System.out.println(reply.generateOutputMessage());
         return reply.getDuration(); // may need to only return this when status is 'monitoring started'
     }

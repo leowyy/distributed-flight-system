@@ -6,8 +6,6 @@ import common.schema.TopUpAccountReply;
 import common.schema.TopUpAccountRequest;
 
 import java.io.UnsupportedEncodingException;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Scanner;
 
 public class HandleTopUpAccount {
@@ -22,7 +20,7 @@ public class HandleTopUpAccount {
     }
 
     public static void handleResponse(byte[] response) {
-        TopUpAccountReply reply = Utils.unmarshal(response, TopUpAccountReply.class);
+        TopUpAccountReply reply = (TopUpAccountReply) Utils.unmarshal(response, TopUpAccountReply.class);
         System.out.println(reply.generateOutputMessage());
     }
 }
