@@ -57,7 +57,7 @@ class UDPClient {
             System.out.println(Constants.GET_FLIGHT_DETAILS_SVC_MSG);
             System.out.println(Constants.RESERVE_SEATS_SVC_MSG);
             System.out.println(Constants.MONITOR_FLIGHT_AVAILABILITY_SVC_MSG);
-            System.out.println(Constants.IDEMPOTENT_SERVICE);
+            System.out.println(Constants.FIND_FLIGHT_BY_PRICE_SVC_MSG);
             System.out.println(Constants.NON_IDEMPOTENT_SERVICE);
             System.out.println(Constants.EXIT_SVC_MSG);
 
@@ -107,6 +107,11 @@ class UDPClient {
                         System.out.println();
                         System.out.println(Constants.SEPARATOR);
                     }
+                    break;
+                case Constants.SERVICE_GET_FLIGHTS_BY_PRICE:
+                    packageByte = HandleFlightsByPrice.constructMessage(scanner, curID);
+                    response = udpClient.sendAndReceive(packageByte);
+                    HandleFlightsByPrice.handleResponse(response);
                     break;
                 case Constants.SERVICE_EXIT:
                     System.out.println(Constants.EXIT_MSG);

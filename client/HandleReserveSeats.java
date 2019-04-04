@@ -52,6 +52,9 @@ public class HandleReserveSeats {
         else if (status == Constants.NO_AVAILABILITY_STATUS) {
             System.out.printf(Constants.FAILED_TO_RESERVE_SEATS_MSG, numReserve, flightId);
         }
+        else if (status == Constants.NEGATIVE_RESERVATION_QUANTITY_STATUS) {
+            System.out.printf(Constants.NEGATIVE_RESERVATION_QUANTITY_MSG, numReserve);
+        }
 
     }
 }

@@ -71,6 +71,11 @@ class UDPServer {
                             udpServer.updateMemo(message, packageByte);
                             udpServer.send(packageByte, message.clientAddress, message.clientPort);
                             break;
+                        case Constants.SERVICE_GET_FLIGHTS_BY_PRICE:
+                            packageByte = ServerFlightsByPrice.handleResponse(curID, message.payload, flightManager);
+                            udpServer.updateMemo(message, packageByte);
+                            udpServer.send(packageByte, message.clientAddress, message.clientPort);
+                            break;
                         default:
                             System.out.println(Constants.UNRECOGNIZE_SVC_MSG);
                     }

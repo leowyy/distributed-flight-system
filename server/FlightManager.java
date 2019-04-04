@@ -14,10 +14,12 @@ import java.util.Iterator;
 public class FlightManager {
     private ArrayList<Flight> flights;
     private HashMap<Integer, ArrayList<Callback>> flightCallbacks;
+//    private HashMap<Integer, >
 
     public FlightManager() {
         this.flights = new ArrayList<>();
         this.flightCallbacks = new HashMap<>();
+//        this.accountReservations = new HashMap<>();
     }
 
     public ArrayList<Integer> getFlightsBySourceDestination (String source, String destination) {
@@ -45,6 +47,7 @@ public class FlightManager {
     public int reserveSeatsForFlight (int flightId, int numReserve) throws IOException, InterruptedException {
         Flight f = this.getFlightById(flightId);
         if (f == null) return Constants.FLIGHT_NOT_FOUND_STATUS;
+        if (numReserve < 1) return Constants.NEGATIVE_RESERVATION_QUANTITY_STATUS;
         Boolean ack = f.reserveSeats(numReserve);
 
         if (ack) {
@@ -83,13 +86,15 @@ public class FlightManager {
         callbacks.add(callback);
     }
 
-//    public void registerMonitorAvailabilityCallback(Callback cbObject) throws Exception {
-//        this.callbacks.add(cbObject);
-//    }
-//
-//    public void deregisterMonitorAvailabilityCallback(Callback cbObject) throws Exception {
-//
-//    }
+    public ArrayList<Integer> searchFlightsBelowPrice(float price) {
+        ArrayList<Integer> flightIds = new ArrayList<>();
+        for (Flight f : this.flights) {
+            if (f.getAirfare() <= price) {
+                flightIds.add(f.getFlightId());
+            }
+        }
+        return flightIds;
+    }
 
     private Flight getFlightById (int flightId) {
         for (Flight f : this.flights) {
