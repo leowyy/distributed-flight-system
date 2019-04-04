@@ -54,8 +54,8 @@ class UDPClient {
 
         System.out.println(Constants.WELCOME_MSG);
         System.out.println(Constants.REQUEST_ACC_ID_MSG);
-        String message = scanner.nextLine();
-        int accountId = Integer.parseInt(message);
+        String accountIdString = scanner.nextLine();
+        int accountId = Integer.parseInt(accountIdString);
 
         while(!exit) {
             System.out.println(Constants.GET_FLIGHT_BY_SOURCE_DESTINATION_SVC_MSG);

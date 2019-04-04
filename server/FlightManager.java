@@ -14,12 +14,12 @@ import java.util.Iterator;
 public class FlightManager {
     private ArrayList<Flight> flights;
     private HashMap<Integer, ArrayList<Callback>> flightCallbacks;
-//    private HashMap<Integer, >
+    private HashMap<Integer, Float> accountBalances;
 
     public FlightManager() {
         this.flights = new ArrayList<>();
         this.flightCallbacks = new HashMap<>();
-//        this.accountReservations = new HashMap<>();
+        this.accountBalances = new HashMap<>();
     }
 
     public ArrayList<Integer> getFlightsBySourceDestination (String source, String destination) {
@@ -94,6 +94,11 @@ public class FlightManager {
             }
         }
         return flightIds;
+    }
+
+    public void topUpAccount(int accountId, float topUpAmount) {
+        float balance = this.accountBalances.get(accountId);
+        this.accountBalances.put(accountId, balance + topUpAmount);
     }
 
     private Flight getFlightById (int flightId) {

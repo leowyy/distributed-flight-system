@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.Scanner;
 
 public class HandleReserveSeats {
-    public static byte[] constructMessage(Scanner scanner, int id) throws UnsupportedEncodingException {
+    public static byte[] constructMessage(Scanner scanner, int accountId, int id) throws UnsupportedEncodingException {
         List message = new ArrayList();
         System.out.println(Constants.SEPARATOR);
 
@@ -23,6 +23,7 @@ public class HandleReserveSeats {
 
         Utils.append(message, id);
         Utils.append(message, Constants.SERVICE_RESERVE_SEATS);
+//        Utils.appendMessage(message, accountId);
         Utils.appendMessage(message, flightId);
         Utils.appendMessage(message, numReserve);
 
@@ -54,6 +55,9 @@ public class HandleReserveSeats {
         }
         else if (status == Constants.NEGATIVE_RESERVATION_QUANTITY_STATUS) {
             System.out.printf(Constants.NEGATIVE_RESERVATION_QUANTITY_MSG, numReserve);
+        }
+        else if (status == Constants.NOT_ENOUGH_MONEY_STATUS) {
+//            System.out.printf(Constants.NOT_ENOUGH_MONEY_MSG, currentBalance, seatsPrice);
         }
 
     }
