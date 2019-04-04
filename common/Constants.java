@@ -101,4 +101,7 @@ public class Constants {
     public static final String ENTER_PRICE_MSG = "Enter desired maximum price: ";
     public static final String FLIGHTS_FOUND_BY_PRICE_MSG = "These are the IDs of the flights found that are cheaper than %f dollars:\n";
     public static final String FLIGHTS_NOT_FOUND_BY_PRICE_MSG = "No flights found that are cheaper than %f dollars.\n";
+
+    // Top up account
+    public static final String ACCOUNT_TOPPED_UP_MSG = "Account balance has been topped up by %f to %f.\n";
 }

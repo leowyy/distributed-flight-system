@@ -111,6 +111,10 @@ public class FlightManager {
         this.accountBalances.put(accountId, balance + topUpAmount);
     }
 
+    public float getBalance(int accountId) {
+        return this.accountBalances.get(accountId);
+    }
+
     private Flight getFlightById (int flightId) {
         for (Flight f : this.flights) {
             if (flightId == f.getFlightId()) {

@@ -4,7 +4,6 @@ import common.Constants;
 
 public class FlightDetailsReply {
     private int id;
-    private int serviceNum;
     private int status;
     private int flightId;
     private int departureTime;
@@ -13,10 +12,9 @@ public class FlightDetailsReply {
     private String source;
     private String destination;
 
-    public FlightDetailsReply(int id, int serviceNum, int status, int flightId, int departureTime, int availability,
+    public FlightDetailsReply(int id, int status, int flightId, int departureTime, int availability,
                               float airfare, String source, String destination) {
         this.id = id;
-        this.serviceNum = serviceNum;
         this.status = status;
         this.flightId = flightId;
         this.departureTime = departureTime;
@@ -28,10 +26,6 @@ public class FlightDetailsReply {
 
     public int getId() {
         return id;
-    }
-
-    public int getServiceNum() {
-        return serviceNum;
     }
 
     public int getStatus() {

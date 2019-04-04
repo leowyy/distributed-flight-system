@@ -6,14 +6,12 @@ import java.util.Arrays;
 
 public class FlightsByPriceReply {
     private int id;
-    private int serviceNum;
     private int status;
     private float price;
     private int[] flights;
 
-    public FlightsByPriceReply(int id, int serviceNum, int status, float price, int[] flights) {
+    public FlightsByPriceReply(int id, int status, float price, int[] flights) {
         this.id = id;
-        this.serviceNum = serviceNum;
         this.status = status;
         this.price = price;
         this.flights = flights;
@@ -21,10 +19,6 @@ public class FlightsByPriceReply {
 
     public int getId() {
         return id;
-    }
-
-    public int getServiceNum() {
-        return serviceNum;
     }
 
     public int getStatus() {

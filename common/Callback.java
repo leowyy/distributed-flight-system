@@ -1,5 +1,7 @@
 package common;
 
+import common.schema.MonitorAvailabilityReply;
+
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.*;
@@ -27,14 +29,15 @@ public class Callback {
     }
 
     private byte[] constructMessage(int id, int availability) throws UnsupportedEncodingException {
-        List message = new ArrayList();
-        Utils.append(message, id);
-        Utils.append(message, Constants.SERVICE_MONITOR_AVAILABILITY);
-        Utils.append(message, Constants.MONITORING_NEW_UPDATE_STATUS);
-        Utils.appendMessage(message, this.flightId);
-        Utils.appendMessage(message, availability);
-
-        return Utils.byteUnboxing(message);
+//        List message = new ArrayList();
+//        Utils.append(message, id);
+//        Utils.append(message, Constants.SERVICE_MONITOR_AVAILABILITY);
+//        Utils.append(message, Constants.MONITORING_NEW_UPDATE_STATUS);
+//        Utils.appendMessage(message, this.flightId);
+//        Utils.appendMessage(message, availability);
+//        return Utils.byteUnboxing(message);
+        MonitorAvailabilityReply reply = new MonitorAvailabilityReply(id, Constants.FLIGHT_FOUND_STATUS, this.flightId, -1, availability);
+        return Utils.marshal(reply);
     }
 
     public int getFlightId() {

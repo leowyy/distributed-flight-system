@@ -6,15 +6,13 @@ import java.util.Arrays;
 
 public class FlightsBySourceDestinationReply {
     private int id;
-    private int serviceNum;
     private String source;
     private String destination;
     private int status;
     private int[] flights;
 
-    public FlightsBySourceDestinationReply(int id, int serviceNum, String source, String destination, int status, int[] flights) {
+    public FlightsBySourceDestinationReply(int id, int status, String source, String destination, int[] flights) {
         this.id = id;
-        this.serviceNum = serviceNum;
         this.source = source;
         this.destination = destination;
         this.status = status;
@@ -23,10 +21,6 @@ public class FlightsBySourceDestinationReply {
 
     public int getId() {
         return id;
-    }
-
-    public int getServiceNum() {
-        return serviceNum;
     }
 
     public String getSource() {
@@ -47,10 +41,10 @@ public class FlightsBySourceDestinationReply {
 
     public String generateOutputMessage() {
         if (this.status == Constants.FLIGHT_FOUND_STATUS) {
-            return String.format(Constants.FLIGHTS_FOUND_BY_PRICE_MSG, this.price) + Arrays.toString(this.flights);
+            return String.format(Constants.FLIGHTS_FOUND_MSG) + Arrays.toString(this.flights);
         }
         else if (this.status == Constants.FLIGHT_NOT_FOUND_STATUS) {
-            return String.format(Constants.FLIGHTS_NOT_FOUND_BY_PRICE_MSG, this.price);
+            return String.format(Constants.NO_FLIGHTS_FOUND_MSG);
         }
         else {
             return "Something went wrong. Status was invalid.";
