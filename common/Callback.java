@@ -8,7 +8,6 @@ import java.io.UnsupportedEncodingException;
 import java.net.*;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.zip.CheckedOutputStream;
 
 public class Callback {
     private final DatagramSocket udpSocket;
@@ -32,13 +31,6 @@ public class Callback {
     }
 
     private byte[] constructMessage(int id, int availability) throws UnsupportedEncodingException {
-//        List message = new ArrayList();
-//        Utils.append(message, id);
-//        Utils.append(message, Constants.SERVICE_MONITOR_AVAILABILITY);
-//        Utils.append(message, Constants.MONITORING_NEW_UPDATE_STATUS);
-//        Utils.appendMessage(message, this.flightId);
-//        Utils.appendMessage(message, availability);
-//        return Utils.byteUnboxing(message);
         MonitorAvailabilityReply reply = new MonitorAvailabilityReply(id, Constants.MONITORING_NEW_UPDATE_STATUS, this.flightId, -1, availability);
         return Utils.marshal(reply);
     }
@@ -55,16 +47,11 @@ public class Callback {
         return currentTime > this.expiry;
     }
 
-    private long getRemainingTime() {
-        long currentTime = System.currentTimeMillis();
-        return this.expiry - currentTime;
-    }
-
     public int getClientPort() {
         return clientPort;
     }
 
-    private void send(byte[] message) throws IOException, InterruptedException{
+    private void send(byte[] message) throws IOException {
         byte[] header = Utils.marshal(message.length);
         DatagramPacket headerPacket = new DatagramPacket(header, header.length, this.clientAddress, this.clientPort);
         this.udpSocket.send(headerPacket);

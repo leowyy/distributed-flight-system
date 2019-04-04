@@ -45,6 +45,7 @@ public class Constants {
     public static final String WELCOME_MSG = "Welcome to NTU Airlines!";
     public static final String REQUEST_ACC_ID_MSG = "Enter Account ID: ";
 
+    public static final String CHOOSE_ONE_MSG = "Choose from the following options:";
     public static final String GET_FLIGHT_BY_SOURCE_DESTINATION_SVC_MSG = "1. Get flight by source and destination.";
     public static final String GET_FLIGHT_DETAILS_SVC_MSG = "2. Get flight details.";
     public static final String RESERVE_SEATS_SVC_MSG = "3. Reserve seats for a flight.";
@@ -53,8 +54,6 @@ public class Constants {
     public static final String TOP_UP_ACCOUNT_MSG = "6. Top up your account.";
     public static final String EXIT_SVC_MSG = "-1. Exit.";
 
-    public static final String ERR_MSG = "Error: %s\n";
-    public static final String SUCCESS_MSG = "SUCCESS!";
     public static final String SEPARATOR = "================================================================================\n";
     public static final String EXIT_MSG = "Thank you for using our flight system!";
     public static final String UNRECOGNIZE_SVC_MSG = "Sorry we cannot recognize your service choice!";

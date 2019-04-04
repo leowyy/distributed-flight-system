@@ -27,34 +27,4 @@ class ServerFlightDetails {
         }
         return Utils.marshal(reply);
     }
-//
-//    public static byte[] constructMessage(int id, int flightId, int departure_time, int availability, float airfare, String source,
-//                                          String destination) throws UnsupportedEncodingException {
-//        // if ret == null
-//
-//        List message = new ArrayList();
-//
-//        Utils.append(message, id);
-//        Utils.append(message, Constants.SERVICE_GET_FLIGHT_DETAILS);
-//        Utils.append(message, Constants.FLIGHT_FOUND_STATUS);
-//        Utils.appendMessage(message, flightId);
-//        Utils.appendMessage(message, departure_time);
-//        Utils.appendMessage(message, availability);
-//        Utils.appendMessage(message, airfare);
-//        Utils.appendMessage(message, source);
-//        Utils.appendMessage(message, destination);
-//
-//        return Utils.byteUnboxing(message);
-//    }
-//
-//    public static byte[] constructFailMessage(int id, int flightId) throws UnsupportedEncodingException{
-//        List message = new ArrayList();
-//
-//        Utils.append(message, id);
-//        Utils.append(message, Constants.SERVICE_GET_FLIGHT_DETAILS);
-//        Utils.append(message, Constants.FLIGHT_NOT_FOUND_STATUS);
-//        Utils.appendMessage(message, flightId);
-//
-//        return Utils.byteUnboxing(message);
-//    }
 }

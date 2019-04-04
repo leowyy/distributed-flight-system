@@ -27,23 +27,4 @@ public class ServerFlightsBySourceDestination {
         }
         return Utils.marshal(reply);
     }
-
-//    public static byte[] constructMessage(int id, ArrayList<Integer> flightIds) throws UnsupportedEncodingException {
-//        List message = new ArrayList();
-//        Utils.append(message, id);
-//        Utils.append(message, Constants.SERVICE_GET_FLIGHT_BY_SOURCE_DESTINATION);
-//
-//        // convert ArrayList into array of primitive integers
-//        int[] intArray = flightIds.stream().mapToInt(Integer::intValue).toArray();
-//
-//        if (flightIds.size() > 0) {
-//            Utils.append(message, Constants.FLIGHT_FOUND_STATUS);
-//            Utils.appendMessage(message, intArray);
-//        }
-//        else { // send 0 failure status
-//            Utils.append(message, Constants.FLIGHT_NOT_FOUND_STATUS);
-//        }
-//
-//        return Utils.byteUnboxing(message);
-//    }
 }

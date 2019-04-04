@@ -25,15 +25,4 @@ public class ServerReserveSeats {
         ReserveSeatsReply reply = new ReserveSeatsReply(id, status, flightId, numReserve, newBalance, price);
         return Utils.marshal(reply);
     }
-
-//    public static byte[] constructMessage(int id, int flightId, int numReserve, int status) throws UnsupportedEncodingException {
-//        List message = new ArrayList();
-//        Utils.append(message, id);
-//        Utils.append(message, Constants.SERVICE_RESERVE_SEATS);
-//        Utils.append(message, status);
-//        Utils.appendMessage(message, flightId);
-//        Utils.appendMessage(message, numReserve);
-//
-//        return Utils.byteUnboxing(message);
-//    }
 }

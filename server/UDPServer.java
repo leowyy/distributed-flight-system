@@ -22,7 +22,7 @@ class UDPServer {
 
     private double failProb;
 
-    public UDPServer(int port, boolean debug) throws SocketException, UnknownHostException {
+    private UDPServer(int port) throws SocketException {
         this.udpSocket = new DatagramSocket(port);
         this.port = port;
         this.idCounter = 0;
@@ -34,18 +34,16 @@ class UDPServer {
         boolean moreQuotes = true;
 
         int port = Constants.DEFAULT_SERVER_PORT;
-        boolean debug = true;
         boolean handled;
 
-        UDPServer udpServer = new UDPServer(port, debug);
+        UDPServer udpServer = new UDPServer(port);
 
         FlightManager flightManager = new FlightManager();
         flightManager.initialiseDummyData();
 
         while (moreQuotes) {
             try {
-                ClientMessage message = udpServer.receive(true);
-                if (debug) message.print();
+                ClientMessage message = udpServer.receive();
 
                 if (Constants.InvoSem.DEFAULT != Constants.InvoSem.AT_MOST_ONCE) handled = false;
                 else handled = udpServer.checkAndSendOldResponse(message);
@@ -117,17 +115,12 @@ class UDPServer {
         return baos.toByteArray();
     }
 
-    /**
-     * Get new ID and increment global ID
-     * @return {@code int} new ID
-     * @since 1.9
-     */
-    public int getID(){
+    private int getID(){
         this.idCounter++;
         return this.idCounter;
     }
 
-    public void send(byte[] message, InetAddress clientAddress, int clientPort) throws IOException, InterruptedException{
+    private void send(byte[] message, InetAddress clientAddress, int clientPort) throws IOException, InterruptedException{
         if (Math.random() < this.failProb) {
             System.out.println("Server dropping packet to simulate lost request");
         }
@@ -142,7 +135,7 @@ class UDPServer {
     }
 
 
-    public ClientMessage receive(boolean monitor) throws IOException, InterruptedException{
+    private ClientMessage receive() throws IOException {
 
         DatagramPacket receivePacket;
         byte[] header = new byte[4];
@@ -170,7 +163,7 @@ class UDPServer {
         );
     }
 
-    public boolean checkAndSendOldResponse(ClientMessage message){
+    private boolean checkAndSendOldResponse(ClientMessage message){
         ClientRecord record = new ClientRecord(message.clientAddress, message.clientPort, message.responseId);
         boolean isKeyPresent = this.memo.containsKey(record);
         if (isKeyPresent) {
@@ -185,7 +178,7 @@ class UDPServer {
         return isKeyPresent;
     }
 
-    public void updateMemo(ClientMessage message, byte[] payload){
+    private void updateMemo(ClientMessage message, byte[] payload){
         ClientRecord record = new ClientRecord(message.clientAddress, message.clientPort, message.responseId);
         this.memo.put(record, payload);
     }

@@ -20,10 +20,4 @@ public class ServerTopUpAccount {
         TopUpAccountReply reply = new TopUpAccountReply(id, accountId, topUpAmount, newBalance);
         return Utils.marshal(reply);
     }
-
-//    public static byte[] constructMessage(int id, int flightId, int numReserve, int status) throws UnsupportedEncodingException {
-//        TopUpAccountReply topUpAccountReply = new TopUpAccountReply(id, Constants.SERVICE_TOP_UP_ACCOUNT, accountId, topUpAmount, newBalance);
-//
-//        return Utils.marshal(topUpAccountReply);
-//    }
 }

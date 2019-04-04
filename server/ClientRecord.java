@@ -15,7 +15,7 @@ public class ClientRecord {
 
     @Override
     public boolean equals(Object obj) {
-        if(obj != null && obj instanceof ClientRecord) {
+        if(obj instanceof ClientRecord) {
             ClientRecord s = (ClientRecord)obj;
             return clientAddress.equals(s.clientAddress) && clientPort == s.clientPort && id == s.id;
         }
