@@ -29,7 +29,6 @@ public class Utils {
         Field[] fields = obj.getClass().getDeclaredFields();
         for (Field field: fields) {
             try {
-                System.out.println(field.getName());
                 appendMessage(message, field.getName());
 
                 Object o = field.get(obj);
@@ -40,6 +39,7 @@ public class Utils {
 
                 switch (type) {
                     case "java.lang.String":
+                    case "class java.lang.String":
                         appendMessage(message,(String) o);
                         break;
                     case "java.lang.Integer":
@@ -51,6 +51,7 @@ public class Utils {
                         appendMessage(message,(float) o);
                         break;
                     case "int[]":
+                    case "class [I":
                         appendMessage(message,(int[]) o);
                         break;
                 }
@@ -76,8 +77,7 @@ public class Utils {
             int sourceLength = unmarshalInteger(b, ptr);
             ptr += Constants.INT_SIZE;
 
-            String propertyName = unmarshalString(b, ptr, ptr+sourceLength);
-            System.out.println(propertyName);
+            String propertyName = unmarshalString(b, ptr, ptr+sourceLength); // propertyName is null
 
             ptr += sourceLength;
 
@@ -89,16 +89,15 @@ public class Utils {
             }
             String type = propDetails.getPropertyType().toString();
             Method setter = propDetails.getWriteMethod();
-            System.out.println(type);
             try {
                 switch (type) {
+                    case "java.lang.String":
                     case "class java.lang.String":
                         sourceLength = unmarshalInteger(b, ptr);
                         ptr += Constants.INT_SIZE;
 
                         String stringValue = unmarshalString(b, ptr, ptr+sourceLength);
                         ptr += sourceLength;
-                        System.out.println(stringValue);
 
                         setter.invoke(obj, stringValue);
                         break;
@@ -117,6 +116,7 @@ public class Utils {
                         setter.invoke(obj, floatValue);
                         break;
                     case "int[]":
+                    case "class [I":
                         int len = Utils.unmarshalInteger(b, ptr);
                         ptr += Constants.INT_SIZE;
                         int[] intArrValue = unmarshalIntArray(b, ptr, ptr+len);

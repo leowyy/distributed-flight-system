@@ -241,8 +241,11 @@ class UDPClient {
         receivePacket = new DatagramPacket(receiveData, receiveData.length);
         this.udpSocket.receive(receivePacket);
         responseID = Utils.unmarshalInteger(receivePacket.getData(), 0);
+//        System.out.println("DEBUG responseID " + responseID);
+        int serviceNum = Utils.unmarshalInteger(receivePacket.getData(), Constants.INT_SIZE);
+//        System.out.println("DEBUG serviceNum " + serviceNum);
 
-        return Arrays.copyOfRange(receivePacket.getData(), Constants.INT_SIZE, messageLength);
+        return Arrays.copyOfRange(receivePacket.getData(), Constants.INT_SIZE*2, messageLength);
     }
 
     public byte[] sendAndReceive(byte[] message) throws IOException, InterruptedException, TimeoutException{

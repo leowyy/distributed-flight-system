@@ -1,5 +1,6 @@
 package server;
 
+import common.Constants;
 import common.Utils;
 import common.schema.ReserveSeatsReply;
 import common.schema.ReserveSeatsRequest;
@@ -13,8 +14,12 @@ public class ServerReserveSeats {
         int accountId = request.getAccountId();
         int flightId = request.getFlightId();
         int numReserve = request.getNumReserve();
-        float price = flightManager.getFlightDetails(flightId).airfare * numReserve;
         int status = flightManager.reserveSeatsForFlight(accountId, flightId, numReserve);
+        float price;
+        if (status != Constants.FLIGHT_NOT_FOUND_STATUS) {
+            price = flightManager.getFlightDetails(flightId).airfare * numReserve;
+        }
+        else price = 0;
         float newBalance = flightManager.getBalance(accountId);
         // Construct response
         ReserveSeatsReply reply = new ReserveSeatsReply(id, status, flightId, numReserve, newBalance, price);

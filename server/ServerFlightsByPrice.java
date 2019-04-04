@@ -21,7 +21,8 @@ public class ServerFlightsByPrice {
             reply = new FlightsByPriceReply(id, Constants.FLIGHT_FOUND_STATUS, price, intArray);
         }
         else {
-            reply = new FlightsByPriceReply(id, Constants.FLIGHT_NOT_FOUND_STATUS, price, null);
+            int[] arrayPlaceholder = {0,0};
+            reply = new FlightsByPriceReply(id, Constants.FLIGHT_NOT_FOUND_STATUS, price, arrayPlaceholder);
         }
         return Utils.marshal(reply);
     }

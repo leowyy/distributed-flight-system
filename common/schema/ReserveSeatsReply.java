@@ -73,7 +73,7 @@ public class ReserveSeatsReply {
 
     public String generateOutputString() {
         if (status == Constants.SEATS_SUCCESSFULLY_RESERVED_STATUS) {
-            return String.format(Constants.SEATS_SUCCESSFULLY_RESERVED_MSG, this.numReserve, this.flightId);
+            return String.format(Constants.SEATS_SUCCESSFULLY_RESERVED_MSG, this.numReserve, this.flightId, this.newBalance);
         }
         else if (status == Constants.FLIGHT_NOT_FOUND_STATUS) {
             return String.format(Constants.FAILED_FLIGHT_DETAILS, this.flightId);

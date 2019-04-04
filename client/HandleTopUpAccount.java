@@ -11,7 +11,7 @@ import java.util.Scanner;
 public class HandleTopUpAccount {
     public static byte[] constructMessage(Scanner scanner, int accountId, int id) throws UnsupportedEncodingException {
         System.out.println(Constants.SEPARATOR);
-        System.out.println(Constants.ENTER_FLIGHT_ID_MSG);
+        System.out.println(Constants.TOP_UP_AMOUNT_MSG);
         String topUpAmountStr = scanner.nextLine();
         float topUpAmount = Float.parseFloat(topUpAmountStr);
 

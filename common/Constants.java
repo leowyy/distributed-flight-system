@@ -75,7 +75,7 @@ public class Constants {
     public static final String PRINT_CLIENT_MESSAGE = "Response ID: %d\nService Type: %d\nClient address: %s\nClient port: %d\nMessage length: %d\n\n";
 
     // Get Flight Details Constant
-    public static final String SUCCESSFUL_FLIGHT_DETAILS = "Flight Details.\nDeparture time: %d\nAirfare: %f\nAvailability: %d\n";
+    public static final String SUCCESSFUL_FLIGHT_DETAILS = "Flight Details.\nDeparture time: %d\nAirfare: %.2f\nAvailability: %d\n";
     public static final String FAILED_FLIGHT_DETAILS = "Flight details not found for flight ID %d\n";
 
     // Get Flight by Source Destination
@@ -86,10 +86,10 @@ public class Constants {
 
     // Reserve seats
     public static final String ENTER_NUM_RESERVE_MSG = "Enter the number of seats you want to reserve: ";
-    public static final String SEATS_SUCCESSFULLY_RESERVED_MSG = "Your %d seats have been reserved for flight ID %d.\n";
+    public static final String SEATS_SUCCESSFULLY_RESERVED_MSG = "Your %d seats have been reserved for flight ID %d.\nRemaining account balance: $%.2f\n";
     public static final String FAILED_TO_RESERVE_SEATS_MSG = "Could not reserve your %d seats for flight ID %d, no availability.\n";
     public static final String NEGATIVE_RESERVATION_QUANTITY_MSG = "You tried to reserve %d seats. Negative numbers are not allowed.\n";
-    public static final String NOT_ENOUGH_MONEY_MSG = "You do not have enough money in your account.\nCurrent balance: %f\nPrice of seats:%f\n";
+    public static final String NOT_ENOUGH_MONEY_MSG = "You do not have enough money in your account.\nCurrent balance: $%.2f\nPrice of seats: $%.2f\n";
 
     // Monitor availability
     public static final String ENTER_MONITOR_INTERVAL_MSG = "Enter monitor interval (in seconds): ";
@@ -99,9 +99,10 @@ public class Constants {
 
     // Get Flight by price
     public static final String ENTER_PRICE_MSG = "Enter desired maximum price: ";
-    public static final String FLIGHTS_FOUND_BY_PRICE_MSG = "These are the IDs of the flights found that are cheaper than %f dollars:\n";
-    public static final String FLIGHTS_NOT_FOUND_BY_PRICE_MSG = "No flights found that are cheaper than %f dollars.\n";
+    public static final String FLIGHTS_FOUND_BY_PRICE_MSG = "These are the IDs of the flights found that are cheaper than $%.2f:\n";
+    public static final String FLIGHTS_NOT_FOUND_BY_PRICE_MSG = "No flights found that are cheaper than $%.2f.\n";
 
     // Top up account
-    public static final String ACCOUNT_TOPPED_UP_MSG = "Account balance has been topped up by %f to %f.\n";
+    public static final String TOP_UP_AMOUNT_MSG = "Key in the amount you would like to top up: ";
+    public static final String ACCOUNT_TOPPED_UP_MSG = "Account balance has been topped up by %.2f to %.2f.\n";
 }

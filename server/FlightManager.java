@@ -51,13 +51,13 @@ public class FlightManager {
 
         // check if account has sufficient money to pay for the seats
         float price = f.getAirfare() * numReserve;
-        if (price > this.accountBalances.get(accountId)) return Constants.NOT_ENOUGH_MONEY_STATUS;
+        float balance = this.getBalanceOrSetUp(accountId);
+        if (price > balance) return Constants.NOT_ENOUGH_MONEY_STATUS;
 
         Boolean ack = f.reserveSeats(numReserve);
 
         if (ack) {
             // deduct from the account balance
-            float balance = this.accountBalances.get(accountId);
             this.accountBalances.put(accountId, balance - price);
 
             // do callback action for clients that are monitoring this flight
@@ -107,12 +107,22 @@ public class FlightManager {
     }
 
     public void topUpAccount(int accountId, float topUpAmount) {
-        float balance = this.accountBalances.get(accountId);
+        float balance = this.getBalanceOrSetUp(accountId);
         this.accountBalances.put(accountId, balance + topUpAmount);
     }
 
     public float getBalance(int accountId) {
         return this.accountBalances.get(accountId);
+    }
+
+    private float getBalanceOrSetUp (int accountId) {
+        if (this.accountBalances.containsKey(accountId)) {
+            return this.accountBalances.get(accountId);
+        }
+        else {
+            this.accountBalances.put(accountId, (float) 0);
+            return (float) 0;
+        }
     }
 
     private Flight getFlightById (int flightId) {
