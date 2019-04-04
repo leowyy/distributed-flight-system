@@ -61,6 +61,7 @@ public class Constants {
     public static final int SEATS_SUCCESSFULLY_RESERVED_STATUS = 3;
     public static final int NO_AVAILABILITY_STATUS = 4;
     public static final int NEGATIVE_RESERVATION_QUANTITY_STATUS = 5;
+    public static final int NOT_ENOUGH_MONEY_STATUS = 6;
 
     // Get Flight Details Constant
     public static final String ENTER_FLIGHT_ID_MSG = "Enter flight ID: ";
@@ -84,6 +85,7 @@ public class Constants {
     public static final String SEATS_SUCCESSFULLY_RESERVED_MSG = "Your %d seats have been reserved for flight ID %d.\n";
     public static final String FAILED_TO_RESERVE_SEATS_MSG = "Could not reserve your %d seats for flight ID %d, no availability.\n";
     public static final String NEGATIVE_RESERVATION_QUANTITY_MSG = "You tried to reserve %d seats. Negative numbers are not allowed.\n";
+    public static final String NOT_ENOUGH_MONEY_MSG = "You do not have enough money in your account.\nCurrent balance: %f\nPrice of seats:%f\n";
 
     // Monitor availability
     public static final String ENTER_MONITOR_INTERVAL_MSG = "Enter monitor interval (in seconds): ";
