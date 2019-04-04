@@ -2,11 +2,13 @@ package common;
 
 import common.schema.MonitorAvailabilityReply;
 
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.zip.CheckedOutputStream;
 
 public class Callback {
     private final DatagramSocket udpSocket;
@@ -25,6 +27,7 @@ public class Callback {
     public void update (int availability) throws IOException, InterruptedException {
         // need to do some sending
         byte[] packageByte = this.constructMessage(0, availability); // ID is just arbitrarily set as 0 for now
+        packageByte = addHeaders(packageByte, 0, Constants.SERVICE_MONITOR_AVAILABILITY);
         this.send(packageByte);
     }
 
@@ -36,7 +39,7 @@ public class Callback {
 //        Utils.appendMessage(message, this.flightId);
 //        Utils.appendMessage(message, availability);
 //        return Utils.byteUnboxing(message);
-        MonitorAvailabilityReply reply = new MonitorAvailabilityReply(id, Constants.FLIGHT_FOUND_STATUS, this.flightId, -1, availability);
+        MonitorAvailabilityReply reply = new MonitorAvailabilityReply(id, Constants.MONITORING_NEW_UPDATE_STATUS, this.flightId, -1, availability);
         return Utils.marshal(reply);
     }
 
@@ -69,5 +72,19 @@ public class Callback {
         DatagramPacket sendPacket = new DatagramPacket(message, message.length, this.clientAddress, this.clientPort);
         this.udpSocket.send(sendPacket);
     }
+
+    private byte[] addHeaders (byte[] packageByte, int id, int serviceNum) throws IOException  {
+        List message = new ArrayList();
+        Utils.append(message, id);
+        Utils.append(message, serviceNum);
+        byte[] header = Utils.byteUnboxing(message);
+
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        baos.write(header);
+        baos.write(packageByte);
+
+        return baos.toByteArray();
+    }
+
 }
 

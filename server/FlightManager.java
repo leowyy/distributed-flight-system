@@ -115,7 +115,7 @@ public class FlightManager {
         return this.accountBalances.get(accountId);
     }
 
-    private float getBalanceOrSetUp (int accountId) {
+    public float getBalanceOrSetUp (int accountId) {
         if (this.accountBalances.containsKey(accountId)) {
             return this.accountBalances.get(accountId);
         }

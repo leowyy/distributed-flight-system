@@ -20,7 +20,7 @@ public class ServerReserveSeats {
             price = flightManager.getFlightDetails(flightId).airfare * numReserve;
         }
         else price = 0;
-        float newBalance = flightManager.getBalance(accountId);
+        float newBalance = flightManager.getBalanceOrSetUp(accountId);
         // Construct response
         ReserveSeatsReply reply = new ReserveSeatsReply(id, status, flightId, numReserve, newBalance, price);
         return Utils.marshal(reply);
