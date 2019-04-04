@@ -35,6 +35,22 @@ public class TopUpAccountReply {
         return newBalance;
     }
 
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public void setAccountId(int accountId) {
+        this.accountId = accountId;
+    }
+
+    public void setTopUpAmount(float topUpAmount) {
+        this.topUpAmount = topUpAmount;
+    }
+
+    public void setNewBalance(float newBalance) {
+        this.newBalance = newBalance;
+    }
+
     public String generateOutputMessage() {
         return String.format(Constants.ACCOUNT_TOPPED_UP_MSG, this.topUpAmount, this.newBalance);
     }

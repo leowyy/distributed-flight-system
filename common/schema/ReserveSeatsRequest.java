@@ -37,4 +37,24 @@ public class ReserveSeatsRequest {
     public int getNumReserve() {
         return numReserve;
     }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public void setServiceNum(int serviceNum) {
+        this.serviceNum = serviceNum;
+    }
+
+    public void setAccountId(int accountId) {
+        this.accountId = accountId;
+    }
+
+    public void setFlightId(int flightId) {
+        this.flightId = flightId;
+    }
+
+    public void setNumReserve(int numReserve) {
+        this.numReserve = numReserve;
+    }
 }

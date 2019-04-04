@@ -36,6 +36,22 @@ public class FlightsByPriceReply {
         return flights;
     }
 
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public void setStatus(int status) {
+        this.status = status;
+    }
+
+    public void setPrice(float price) {
+        this.price = price;
+    }
+
+    public void setFlights(int[] flights) {
+        this.flights = flights;
+    }
+
     public String generateOutputMessage() {
         if (this.status == Constants.FLIGHT_FOUND_STATUS) {
             return String.format(Constants.FLIGHTS_FOUND_BY_PRICE_MSG, this.price) + Arrays.toString(this.flights);

@@ -5,8 +5,10 @@ import common.Utils;
 
 import java.net.*;
 import java.io.*;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 
 /**
  * Created by signapoop on 1/4/19.
@@ -53,27 +55,38 @@ class UDPServer {
                     switch (message.serviceType) {
                         case Constants.SERVICE_GET_FLIGHT_DETAILS:
                             packageByte = ServerFlightDetails.handleResponse(curID, message.payload, flightManager);
+                            packageByte = udpServer.addHeaders(packageByte, curID, message.serviceType);
                             udpServer.updateMemo(message, packageByte);
                             udpServer.send(packageByte, message.clientAddress, message.clientPort);
                             break;
                         case Constants.SERVICE_GET_FLIGHT_BY_SOURCE_DESTINATION:
                             packageByte = ServerFlightsBySourceDestination.handleResponse(curID, message.payload, flightManager);
+                            packageByte = udpServer.addHeaders(packageByte, curID, message.serviceType);
                             udpServer.updateMemo(message, packageByte);
                             udpServer.send(packageByte, message.clientAddress, message.clientPort);
                             break;
                         case Constants.SERVICE_RESERVE_SEATS:
                             packageByte = ServerReserveSeats.handleResponse(curID, message.payload, flightManager);
+                            packageByte = udpServer.addHeaders(packageByte, curID, message.serviceType);
                             udpServer.updateMemo(message, packageByte);
                             udpServer.send(packageByte, message.clientAddress, message.clientPort);
                             break;
                         case Constants.SERVICE_MONITOR_AVAILABILITY:
                             packageByte = ServerMonitorAvailability.handleResponse(curID, message.payload, flightManager,
                                     message.clientAddress, message.clientPort, udpServer.udpSocket);
+                            packageByte = udpServer.addHeaders(packageByte, curID, message.serviceType);
                             udpServer.updateMemo(message, packageByte);
                             udpServer.send(packageByte, message.clientAddress, message.clientPort);
                             break;
                         case Constants.SERVICE_GET_FLIGHTS_BY_PRICE:
                             packageByte = ServerFlightsByPrice.handleResponse(curID, message.payload, flightManager);
+                            packageByte = udpServer.addHeaders(packageByte, curID, message.serviceType);
+                            udpServer.updateMemo(message, packageByte);
+                            udpServer.send(packageByte, message.clientAddress, message.clientPort);
+                            break;
+                        case Constants.SERVICE_TOP_UP_ACCOUNT:
+                            packageByte = ServerTopUpAccount.handleResponse(curID, message.payload, flightManager);
+                            packageByte = udpServer.addHeaders(packageByte, curID, message.serviceType);
                             udpServer.updateMemo(message, packageByte);
                             udpServer.send(packageByte, message.clientAddress, message.clientPort);
                             break;
@@ -89,6 +102,19 @@ class UDPServer {
             }
         }
         udpServer.udpSocket.close();
+    }
+
+    private byte[] addHeaders (byte[] packageByte, int id, int serviceNum) throws IOException  {
+        List message = new ArrayList();
+        Utils.append(message, id);
+        Utils.append(message, serviceNum);
+        byte[] header = Utils.byteUnboxing(message);
+
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        baos.write(header);
+        baos.write(packageByte);
+
+        return baos.toByteArray();
     }
 
     /**

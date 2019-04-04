@@ -15,6 +15,38 @@ public class FlightDetailsReply {
     public FlightDetailsReply() {
     }
 
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public void setStatus(int status) {
+        this.status = status;
+    }
+
+    public void setFlightId(int flightId) {
+        this.flightId = flightId;
+    }
+
+    public void setDepartureTime(int departureTime) {
+        this.departureTime = departureTime;
+    }
+
+    public void setAvailability(int availability) {
+        this.availability = availability;
+    }
+
+    public void setAirfare(float airfare) {
+        this.airfare = airfare;
+    }
+
+    public void setSource(String source) {
+        this.source = source;
+    }
+
+    public void setDestination(String destination) {
+        this.destination = destination;
+    }
+
     public FlightDetailsReply(int id, int status, int flightId, int departureTime, int availability,
                               float airfare, String source, String destination) {
         this.id = id;

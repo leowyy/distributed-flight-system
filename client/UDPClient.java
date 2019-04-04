@@ -2,9 +2,13 @@ package client;
 import common.Constants;
 import common.Utils;
 
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.net.*;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Scanner;
 
 import java.util.concurrent.TimeoutException;
@@ -75,22 +79,26 @@ class UDPClient {
             switch (serviceType) {
                 case Constants.SERVICE_GET_FLIGHT_DETAILS:
                     packageByte = HandleFlightDetails.constructMessage(scanner, curID);
+                    packageByte = udpClient.addHeaders(packageByte, curID, serviceType);
                     response = udpClient.sendAndReceive(packageByte);
                     HandleFlightDetails.handleResponse(response);
                     break;
                 case Constants.SERVICE_GET_FLIGHT_BY_SOURCE_DESTINATION:
                     packageByte = HandleFlightsBySourceDestination.constructMessage(scanner, curID);
+                    packageByte = udpClient.addHeaders(packageByte, curID, serviceType);
                     response = udpClient.sendAndReceive(packageByte);
                     HandleFlightsBySourceDestination.handleResponse(response);
                     break;
                 case Constants.SERVICE_RESERVE_SEATS:
                     packageByte = HandleReserveSeats.constructMessage(scanner, accountId, curID);
+                    packageByte = udpClient.addHeaders(packageByte, curID, serviceType);
                     response = udpClient.sendAndReceive(packageByte);
                     HandleReserveSeats.handleResponse(response);
                     break;
                 case Constants.SERVICE_MONITOR_AVAILABILITY:
                     int origMaxTime = udpClient.maxTime;
                     packageByte = HandleMonitorAvailability.constructMessage(scanner, curID);
+                    packageByte = udpClient.addHeaders(packageByte, curID, serviceType);
                     response = udpClient.sendAndReceive(packageByte);
                     int monitorInterval = HandleMonitorAvailability.handleResponse(response);
                     long expiry = System.currentTimeMillis() + (monitorInterval * 1000);
@@ -115,8 +123,15 @@ class UDPClient {
                     break;
                 case Constants.SERVICE_GET_FLIGHTS_BY_PRICE:
                     packageByte = HandleFlightsByPrice.constructMessage(scanner, curID);
+                    packageByte = udpClient.addHeaders(packageByte, curID, serviceType);
                     response = udpClient.sendAndReceive(packageByte);
                     HandleFlightsByPrice.handleResponse(response);
+                    break;
+                case Constants.SERVICE_TOP_UP_ACCOUNT:
+                    packageByte = HandleTopUpAccount.constructMessage(scanner, accountId, curID);
+                    packageByte = udpClient.addHeaders(packageByte, curID, serviceType);
+                    response = udpClient.sendAndReceive(packageByte);
+                    HandleTopUpAccount.handleResponse(response);
                     break;
                 case Constants.SERVICE_EXIT:
                     System.out.println(Constants.EXIT_MSG);
@@ -126,9 +141,21 @@ class UDPClient {
                     System.out.println(Constants.UNRECOGNIZE_SVC_MSG);
             }
             System.out.println(Constants.SEPARATOR);
-
             }
-        }
+    }
+
+    private byte[] addHeaders (byte[] packageByte, int id, int serviceNum) throws IOException  {
+        List message = new ArrayList();
+        Utils.append(message, id);
+        Utils.append(message, serviceNum);
+        byte[] header = Utils.byteUnboxing(message);
+
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        baos.write(header);
+        baos.write(packageByte);
+
+        return baos.toByteArray();
+    }
 
 
     public int getInvSem() {
@@ -191,6 +218,7 @@ class UDPClient {
             byte[] header = Utils.marshal(message.length);
             DatagramPacket headerPacket = new DatagramPacket(header, header.length, this.IPAddress, this.serverPort);
             this.udpSocket.send(headerPacket);
+
 
             DatagramPacket sendPacket = new DatagramPacket(message, message.length, this.IPAddress, this.serverPort);
             this.udpSocket.send(sendPacket);

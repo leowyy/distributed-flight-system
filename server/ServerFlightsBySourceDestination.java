@@ -22,7 +22,8 @@ public class ServerFlightsBySourceDestination {
             reply = new FlightsBySourceDestinationReply(id, Constants.FLIGHT_FOUND_STATUS, source, destination, intArray);
         }
         else {
-            reply = new FlightsBySourceDestinationReply(id, Constants.FLIGHT_NOT_FOUND_STATUS, source, destination, null);
+            int[] arrayPlaceholder = {0, 0};
+            reply = new FlightsBySourceDestinationReply(id, Constants.FLIGHT_NOT_FOUND_STATUS, source, destination, arrayPlaceholder);
         }
         return Utils.marshal(reply);
     }

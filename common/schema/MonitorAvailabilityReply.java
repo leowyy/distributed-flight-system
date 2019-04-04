@@ -40,6 +40,26 @@ public class MonitorAvailabilityReply {
         return availability;
     }
 
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public void setStatus(int status) {
+        this.status = status;
+    }
+
+    public void setFlightId(int flightId) {
+        this.flightId = flightId;
+    }
+
+    public void setDuration(int duration) {
+        this.duration = duration;
+    }
+
+    public void setAvailability(int availability) {
+        this.availability = availability;
+    }
+
     public String generateOutputMessage() {
         if (status == Constants.FLIGHT_FOUND_STATUS) {
             return String.format(Constants.MONITORING_STARTED_MSG, this.flightId);

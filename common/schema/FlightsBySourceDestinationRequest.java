@@ -31,4 +31,20 @@ public class FlightsBySourceDestinationRequest {
     public String getDestination() {
         return destination;
     }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public void setServiceNum(int serviceNum) {
+        this.serviceNum = serviceNum;
+    }
+
+    public void setSource(String source) {
+        this.source = source;
+    }
+
+    public void setDestination(String destination) {
+        this.destination = destination;
+    }
 }

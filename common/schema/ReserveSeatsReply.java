@@ -47,6 +47,30 @@ public class ReserveSeatsReply {
         return price;
     }
 
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public void setStatus(int status) {
+        this.status = status;
+    }
+
+    public void setFlightId(int flightId) {
+        this.flightId = flightId;
+    }
+
+    public void setNumReserve(int numReserve) {
+        this.numReserve = numReserve;
+    }
+
+    public void setNewBalance(float newBalance) {
+        this.newBalance = newBalance;
+    }
+
+    public void setPrice(float price) {
+        this.price = price;
+    }
+
     public String generateOutputString() {
         if (status == Constants.SEATS_SUCCESSFULLY_RESERVED_STATUS) {
             return String.format(Constants.SEATS_SUCCESSFULLY_RESERVED_MSG, this.numReserve, this.flightId);

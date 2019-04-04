@@ -29,6 +29,7 @@ public class Utils {
         Field[] fields = obj.getClass().getDeclaredFields();
         for (Field field: fields) {
             try {
+                System.out.println(field.getName());
                 appendMessage(message, field.getName());
 
                 Object o = field.get(obj);
@@ -76,6 +77,8 @@ public class Utils {
             ptr += Constants.INT_SIZE;
 
             String propertyName = unmarshalString(b, ptr, ptr+sourceLength);
+            System.out.println(propertyName);
+
             ptr += sourceLength;
 
             PropertyDescriptor propDetails = null;
@@ -86,14 +89,16 @@ public class Utils {
             }
             String type = propDetails.getPropertyType().toString();
             Method setter = propDetails.getWriteMethod();
+            System.out.println(type);
             try {
                 switch (type) {
-                    case "java.lang.String":
+                    case "class java.lang.String":
                         sourceLength = unmarshalInteger(b, ptr);
                         ptr += Constants.INT_SIZE;
 
                         String stringValue = unmarshalString(b, ptr, ptr+sourceLength);
                         ptr += sourceLength;
+                        System.out.println(stringValue);
 
                         setter.invoke(obj, stringValue);
                         break;
@@ -316,7 +321,7 @@ public class Utils {
      * @throws UnsupportedEncodingException
      * @since 1.9
      */
-    public static void appendMessage(List list, int x)throws UnsupportedEncodingException{
+    public static void appendMessage(List list, int x) throws UnsupportedEncodingException{
         list.addAll(Arrays.asList(Utils.byteBoxing(Utils.marshal(
                 Constants.INT_SIZE
         ))));
@@ -334,7 +339,7 @@ public class Utils {
      * @throws UnsupportedEncodingException
      * @since 1.9
      */
-    public static void appendMessage(List list, float f)throws UnsupportedEncodingException{
+    public static void appendMessage(List list, float f) throws UnsupportedEncodingException{
         list.addAll(Arrays.asList(Utils.byteBoxing(Utils.marshal(
                 Constants.FLOAT_SIZE
         ))));

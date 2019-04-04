@@ -42,6 +42,26 @@ public class FlightsBySourceDestinationReply {
         return flights;
     }
 
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public void setSource(String source) {
+        this.source = source;
+    }
+
+    public void setDestination(String destination) {
+        this.destination = destination;
+    }
+
+    public void setStatus(int status) {
+        this.status = status;
+    }
+
+    public void setFlights(int[] flights) {
+        this.flights = flights;
+    }
+
     public String generateOutputMessage() {
         if (this.status == Constants.FLIGHT_FOUND_STATUS) {
             return String.format(Constants.FLIGHTS_FOUND_MSG) + Arrays.toString(this.flights);

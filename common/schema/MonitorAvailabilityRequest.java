@@ -31,4 +31,20 @@ public class MonitorAvailabilityRequest {
     public int getDuration() {
         return duration;
     }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public void setServiceNum(int serviceNum) {
+        this.serviceNum = serviceNum;
+    }
+
+    public void setFlightId(int flightId) {
+        this.flightId = flightId;
+    }
+
+    public void setDuration(int duration) {
+        this.duration = duration;
+    }
 }
