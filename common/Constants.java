@@ -40,6 +40,9 @@ public class Constants {
     public static final int SERVICE_EXIT = -1;
 
     // Main UI Constant
+    public static final String WELCOME_MSG = "Welcome to NTU Airlines!";
+    public static final String REQUEST_ACC_ID_MSG = "Enter Account ID: ";
+
     public static final String GET_FLIGHT_BY_SOURCE_DESTINATION_SVC_MSG = "1. Get flight by source and destination.";
     public static final String GET_FLIGHT_DETAILS_SVC_MSG = "2. Get flight details.";
     public static final String RESERVE_SEATS_SVC_MSG = "3. Reserve seats for a flight.";
