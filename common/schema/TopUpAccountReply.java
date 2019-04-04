@@ -3,10 +3,14 @@ package common.schema;
 import common.Constants;
 
 public class TopUpAccountReply {
-    private int id;
-    private int accountId;
-    private float topUpAmount;
-    private float newBalance;
+    public int id;
+    public int accountId;
+
+    public TopUpAccountReply() {
+    }
+
+    public float topUpAmount;
+    public float newBalance;
 
     public TopUpAccountReply(int id, int accountId, float topUpAmount, float newBalance) {
         this.id = id;

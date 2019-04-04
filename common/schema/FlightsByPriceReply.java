@@ -5,10 +5,13 @@ import common.Constants;
 import java.util.Arrays;
 
 public class FlightsByPriceReply {
-    private int id;
-    private int status;
-    private float price;
-    private int[] flights;
+    public int id;
+    public int status;
+    public float price;
+    public int[] flights;
+
+    public FlightsByPriceReply() {
+    }
 
     public FlightsByPriceReply(int id, int status, float price, int[] flights) {
         this.id = id;

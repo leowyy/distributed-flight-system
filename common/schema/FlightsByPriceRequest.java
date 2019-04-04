@@ -1,9 +1,12 @@
 package common.schema;
 
 public class FlightsByPriceRequest {
-    private int id;
-    private int serviceNum;
-    private float price;
+    public int id;
+    public int serviceNum;
+    public float price;
+
+    public FlightsByPriceRequest() {
+    }
 
     public FlightsByPriceRequest(int id, int serviceNum, float price) {
         this.id = id;

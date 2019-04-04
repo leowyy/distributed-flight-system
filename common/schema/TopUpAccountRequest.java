@@ -1,10 +1,13 @@
 package common.schema;
 
 public class TopUpAccountRequest {
-    private int id;
-    private int serviceNum;
-    private int accountId;
-    private float topUpAmount;
+    public int id;
+    public int serviceNum;
+    public int accountId;
+    public float topUpAmount;
+
+    public TopUpAccountRequest() {
+    }
 
     public TopUpAccountRequest(int id, int serviceNum, int accountId, float topUpAmount) {
         this.id = id;

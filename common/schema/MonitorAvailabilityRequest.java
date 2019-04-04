@@ -1,10 +1,13 @@
 package common.schema;
 
 public class MonitorAvailabilityRequest {
-    private int id;
-    private int serviceNum;
-    private int flightId;
-    private int duration;
+    public int id;
+    public int serviceNum;
+    public int flightId;
+    public int duration;
+
+    public MonitorAvailabilityRequest() {
+    }
 
     public MonitorAvailabilityRequest(int id, int serviceNum, int flightId, int duration) {
         this.id = id;

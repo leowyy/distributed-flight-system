@@ -3,14 +3,17 @@ package common.schema;
 import common.Constants;
 
 public class FlightDetailsReply {
-    private int id;
-    private int status;
-    private int flightId;
-    private int departureTime;
-    private int availability;
-    private float airfare;
-    private String source;
-    private String destination;
+    public int id;
+    public int status;
+    public int flightId;
+    public int departureTime;
+    public int availability;
+    public float airfare;
+    public String source;
+    public String destination;
+
+    public FlightDetailsReply() {
+    }
 
     public FlightDetailsReply(int id, int status, int flightId, int departureTime, int availability,
                               float airfare, String source, String destination) {

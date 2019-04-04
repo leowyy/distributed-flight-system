@@ -1,9 +1,24 @@
 package common.schema;
 
 public class FlightDetailsRequest {
-    private int id;
-    private int serviceNum;
-    private int flightId;
+    public int id;
+    public int serviceNum;
+    public int flightId;
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public void setServiceNum(int serviceNum) {
+        this.serviceNum = serviceNum;
+    }
+
+    public void setFlightId(int flightId) {
+        this.flightId = flightId;
+    }
+
+    public FlightDetailsRequest() {
+    }
 
     public FlightDetailsRequest(int id, int serviceNum, int flightId) {
         this.id = id;

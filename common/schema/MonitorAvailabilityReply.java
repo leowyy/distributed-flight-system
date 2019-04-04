@@ -1,14 +1,16 @@
 package common.schema;
 
 import common.Constants;
-import common.Utils;
 
 public class MonitorAvailabilityReply {
-    private int id;
-    private int status;
-    private int flightId;
-    private int duration;
-    private int availability;
+    public int id;
+    public int status;
+    public int flightId;
+    public int duration;
+    public int availability;
+
+    public MonitorAvailabilityReply() {
+    }
 
     public MonitorAvailabilityReply(int id, int status, int flightId, int duration, int availability) {
         this.id = id;

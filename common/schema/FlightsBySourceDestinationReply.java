@@ -5,11 +5,14 @@ import common.Constants;
 import java.util.Arrays;
 
 public class FlightsBySourceDestinationReply {
-    private int id;
-    private String source;
-    private String destination;
-    private int status;
-    private int[] flights;
+    public int id;
+    public String source;
+    public String destination;
+    public int status;
+    public int[] flights;
+
+    public FlightsBySourceDestinationReply() {
+    }
 
     public FlightsBySourceDestinationReply(int id, int status, String source, String destination, int[] flights) {
         this.id = id;

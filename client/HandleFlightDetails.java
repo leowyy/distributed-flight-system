@@ -18,6 +18,7 @@ class HandleFlightDetails {
         int flightId = Integer.parseInt(input);
 
         FlightDetailsRequest request = new FlightDetailsRequest(id, Constants.SERVICE_GET_FLIGHT_DETAILS, flightId);
+
         return Utils.marshal(request);
     }
 

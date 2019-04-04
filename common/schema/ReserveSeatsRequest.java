@@ -1,11 +1,14 @@
 package common.schema;
 
 public class ReserveSeatsRequest {
-    private int id;
-    private int serviceNum;
-    private int accountId;
-    private int flightId;
-    private int numReserve;
+    public int id;
+    public int serviceNum;
+    public int accountId;
+    public int flightId;
+    public int numReserve;
+
+    public ReserveSeatsRequest() {
+    }
 
     public ReserveSeatsRequest(int id, int serviceNum, int accountId, int flightId, int numReserve) {
         this.id = id;

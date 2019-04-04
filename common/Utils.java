@@ -22,7 +22,9 @@ public class Utils {
     public static byte[] marshal(Object obj) throws UnsupportedEncodingException {
         List message = new ArrayList();
 
-        //marshallObject(obj, res);
+// @TODO
+//        append(message, obj.getId());
+//        append(message, obj.getServiceNum());
 
         Field[] fields = obj.getClass().getDeclaredFields();
         for (Field field: fields) {

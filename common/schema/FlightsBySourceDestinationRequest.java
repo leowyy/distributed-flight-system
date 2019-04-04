@@ -1,10 +1,13 @@
 package common.schema;
 
 public class FlightsBySourceDestinationRequest {
-    private int id;
-    private int serviceNum;
-    private String source;
-    private String destination;
+    public int id;
+    public int serviceNum;
+    public String source;
+    public String destination;
+
+    public FlightsBySourceDestinationRequest() {
+    }
 
     public FlightsBySourceDestinationRequest(int id, int serviceNum, String source, String destination) {
         this.id = id;

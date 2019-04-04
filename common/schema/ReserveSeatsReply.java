@@ -3,12 +3,16 @@ package common.schema;
 import common.Constants;
 
 public class ReserveSeatsReply {
-    private int id;
-    private int status;
-    private int flightId;
-    private int numReserve;
-    private float newBalance;
-    private float price;
+    public int id;
+    public int status;
+    public int flightId;
+    public int numReserve;
+
+    public ReserveSeatsReply() {
+    }
+
+    public float newBalance;
+    public float price;
 
     public ReserveSeatsReply(int id, int status, int flightId, int numReserve, float newBalance, float price) {
         this.id = id;
